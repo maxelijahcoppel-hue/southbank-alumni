@@ -92,45 +92,43 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .pointOfView({ lat: LONDON.lat, lng: LONDON.lng, altitude: 2.5 }, 0)
         .width(globeRef.current.clientWidth)
         .height(globeRef.current.clientHeight)
-        // Points (alumni pins) — larger and with labels
-        .pointsData([])
-        .pointLat((d: unknown) => (d as AlumniProfile).latitude ?? 0)
-        .pointLng((d: unknown) => (d as AlumniProfile).longitude ?? 0)
-        .pointColor(() => "#d4a843")
-        .pointAltitude(0.02)
-        .pointRadius(0.6)
-        .pointsMerge(false)
-        .onPointClick((point: unknown) => {
-          const p = point as AlumniProfile;
-          setSelectedAlumni(p);
-          if (globeInstanceRef.current && p.latitude && p.longitude) {
-            globeInstanceRef.current.pointOfView(
-              { lat: p.latitude, lng: p.longitude, altitude: 1.5 },
-              1000
-            );
-          }
-        })
-        // HTML labels on hover
-        .pointLabel((d: unknown) => {
+        // HTML pin markers on the globe surface
+        .htmlElementsData([])
+        .htmlLat((d: unknown) => (d as AlumniProfile).latitude ?? 0)
+        .htmlLng((d: unknown) => (d as AlumniProfile).longitude ?? 0)
+        .htmlAltitude(0.02)
+        .htmlElement((d: unknown) => {
           const p = d as AlumniProfile;
-          return `
-            <div style="
-              background: rgba(15,29,50,0.95);
-              backdrop-filter: blur(12px);
-              border: 1px solid rgba(255,255,255,0.08);
-              border-radius: 12px;
-              padding: 12px 16px;
-              color: white;
-              font-family: system-ui, sans-serif;
-              min-width: 180px;
-              pointer-events: none;
-            ">
-              <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">${p.full_name}</div>
-              <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 2px;">${p.university}</div>
-              <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 6px;">${p.current_profession}</div>
-              <div style="font-size: 11px; color: #d4a843;">Click to view profile</div>
+          const wrapper = document.createElement("div");
+          wrapper.style.cursor = "pointer";
+          wrapper.style.transition = "transform 0.2s ease";
+          wrapper.innerHTML = `
+            <div style="display:flex;flex-direction:column;align-items:center;transform:translateY(-20px);">
+              <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20c0-6.6-5.4-12-12-12z" fill="#d4a843"/>
+                <circle cx="12" cy="11" r="5" fill="#0a1628"/>
+              </svg>
+              <div style="width:2px;height:8px;background:rgba(212,168,67,0.4);"></div>
             </div>
           `;
+          wrapper.addEventListener("mouseenter", () => {
+            wrapper.style.transform = "scale(1.3)";
+          });
+          wrapper.addEventListener("mouseleave", () => {
+            wrapper.style.transform = "scale(1)";
+          });
+          wrapper.addEventListener("click", () => {
+            setSelectedAlumni(p);
+            if (globeInstanceRef.current && p.latitude && p.longitude) {
+              globeInstanceRef.current.pointOfView(
+                { lat: p.latitude, lng: p.longitude, altitude: 1.5 },
+                1000
+              );
+            }
+          });
+          // Tooltip on hover
+          wrapper.title = `${p.full_name} · ${p.university}`;
+          return wrapper;
         })
         // Arcs from London
         .arcsData([])
@@ -198,7 +196,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   useEffect(() => {
     if (!globeInstanceRef.current || !globeReady) return;
     const validAlumni = filteredAlumni.filter((a) => a.latitude !== null && a.longitude !== null);
-    globeInstanceRef.current.pointsData(validAlumni).arcsData(validAlumni);
+    globeInstanceRef.current.htmlElementsData(validAlumni).arcsData(validAlumni);
   }, [filteredAlumni, globeReady]);
 
   return (
