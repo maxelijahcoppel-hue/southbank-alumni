@@ -201,28 +201,15 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         </div>
       )}
 
-      {/* Hero banner — always visible */}
+      {/* Hero heading — top, minimal */}
       {globeReady && (
-        <div className="absolute top-24 left-0 right-0 z-20 pointer-events-none flex flex-col items-center px-4">
+        <div className="absolute top-24 left-0 right-0 z-20 pointer-events-none flex justify-center px-4">
           <h1
-            className="text-white text-3xl md:text-5xl font-bold tracking-tight text-center mb-2 drop-shadow-lg"
+            className="text-white text-2xl md:text-4xl font-bold tracking-tight text-center drop-shadow-lg"
             style={{ animation: "fade-in 0.8s ease forwards" }}
           >
             Our alumni, around the world
           </h1>
-          <p
-            className="text-white/80 text-base md:text-lg text-center max-w-lg mb-5 drop-shadow-md"
-            style={{ animation: "fade-in 1.2s ease forwards" }}
-          >
-            See where Southbank students end up. Click a pin to explore their story.
-          </p>
-          <a
-            href="/directory"
-            className="pointer-events-auto text-sm font-medium px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-white/80 hover:bg-white/20 hover:text-white transition-all"
-            style={{ animation: "fade-in 1.6s ease forwards" }}
-          >
-            Browse the full directory →
-          </a>
         </div>
       )}
 
@@ -272,9 +259,15 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         </div>
       </div>
 
-      {/* Interaction hint — bottom right */}
+      {/* CTA + hint — bottom right */}
       {globeReady && !selectedAlumni && (
-        <div className="absolute bottom-10 right-8 z-10 hidden md:block">
+        <div className="absolute bottom-10 right-8 z-10 hidden md:flex flex-col items-end gap-3">
+          <a
+            href="/directory"
+            className="text-sm font-medium px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-white/80 hover:bg-white/20 hover:text-white transition-all"
+          >
+            Browse the full directory →
+          </a>
           <p className="text-white/25 text-xs tracking-wide">
             Drag to rotate · Scroll to zoom · Click a pin to explore
           </p>
