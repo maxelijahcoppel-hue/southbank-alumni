@@ -147,14 +147,15 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       const renderer = globe.renderer();
       renderer.setClearColor(0x041510, 1);
 
-      // Brighten the globe — add ambient light and boost directional
+      // Brighten the globe by modifying existing lights in the scene
       const scene = globe.scene();
-      import("three").then((THREE) => {
-        const ambient = new THREE.AmbientLight(0xffffff, 1.2);
-        scene.add(ambient);
-        const fill = new THREE.DirectionalLight(0xffffff, 0.6);
-        fill.position.set(-1, 0.5, -1);
-        scene.add(fill);
+      scene.children.forEach((child: { type?: string; intensity?: number }) => {
+        if (child.type === "AmbientLight") {
+          child.intensity = 1.8;
+        }
+        if (child.type === "DirectionalLight") {
+          child.intensity = 1.5;
+        }
       });
 
       // Controls
