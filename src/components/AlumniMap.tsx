@@ -40,6 +40,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const globeInstanceRef = useRef<any>(null);
   const [globeReady, setGlobeReady] = useState(false);
+  const [introFaded, setIntroFaded] = useState(false);
 
   const filteredAlumni = useMemo(() => {
     return alumni.filter((a) => {
@@ -62,6 +63,14 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
     const universities = new Set(filteredAlumni.map((a) => a.university));
     return { total: filteredAlumni.length, countries: countries.size, universities: universities.size };
   }, [filteredAlumni]);
+
+  // Fade out intro after 4 seconds
+  useEffect(() => {
+    if (globeReady) {
+      const timer = setTimeout(() => setIntroFaded(true), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [globeReady]);
 
   // Initialize globe
   useEffect(() => {
@@ -201,19 +210,31 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         </div>
       )}
 
-      {/* Hero heading + pin hint */}
-      {globeReady && (
-        <div className="absolute top-24 left-0 right-0 z-20 pointer-events-none flex flex-col items-center px-4">
-          <h1
-            className="text-white text-2xl md:text-4xl font-bold tracking-tight text-center drop-shadow-lg"
-            style={{ animation: "fade-in 0.8s ease forwards" }}
-          >
+      {/* Intro splash — fades out */}
+      {globeReady && !introFaded && (
+        <div
+          className="absolute inset-0 z-20 pointer-events-none flex flex-col items-center justify-center transition-opacity duration-1000"
+          style={{ opacity: 1, animation: "fade-in 0.5s ease forwards" }}
+        >
+          <h1 className="text-white text-4xl md:text-6xl font-bold tracking-tight text-center drop-shadow-lg mb-3">
+            From Westminster to the world
+          </h1>
+          <p className="text-white/60 text-base md:text-lg">
+            The Southbank Alumni Network
+          </p>
+        </div>
+      )}
+
+      {/* Permanent heading — fades in after intro */}
+      {globeReady && introFaded && (
+        <div
+          className="absolute top-24 left-0 right-0 z-20 pointer-events-none flex flex-col items-center px-4"
+          style={{ animation: "fade-in 0.8s ease forwards" }}
+        >
+          <h1 className="text-white text-2xl md:text-4xl font-bold tracking-tight text-center drop-shadow-lg">
             Our alumni, around the world
           </h1>
-          <p
-            className="text-white/50 text-sm mt-2"
-            style={{ animation: "fade-in 1.4s ease forwards" }}
-          >
+          <p className="text-white/50 text-sm mt-2">
             Click a pin to explore their story
           </p>
         </div>
