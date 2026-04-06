@@ -96,13 +96,13 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .htmlElementsData([])
         .htmlLat((d: unknown) => (d as AlumniProfile).latitude ?? 0)
         .htmlLng((d: unknown) => (d as AlumniProfile).longitude ?? 0)
-        .htmlAltitude(0)
+        .htmlAltitude(-0.01)
         .htmlElement((d: unknown) => {
           const p = d as AlumniProfile;
           const el = document.createElement("div");
           el.style.cursor = "pointer";
           el.style.transition = "transform 0.2s ease";
-          el.style.transform = "translate(-10px, -28px)";
+          el.style.transform = "translate(-10px, -14px)";
           el.title = `${p.full_name} · ${p.university}`;
           // Yellow pushpin SVG
           el.innerHTML = `<svg width="20" height="28" viewBox="0 0 20 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -119,8 +119,8 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
             <!-- Highlight on barrel -->
             <rect x="7.5" y="7.5" width="2" height="5" rx="0.8" fill="#e8c65a" opacity="0.4"/>
           </svg>`;
-          el.addEventListener("mouseenter", () => { el.style.transform = "translate(-10px, -28px) scale(1.3)"; });
-          el.addEventListener("mouseleave", () => { el.style.transform = "translate(-10px, -28px) scale(1)"; });
+          el.addEventListener("mouseenter", () => { el.style.transform = "translate(-10px, -14px) scale(1.3)"; });
+          el.addEventListener("mouseleave", () => { el.style.transform = "translate(-10px, -14px) scale(1)"; });
           el.addEventListener("click", () => {
             setSelectedAlumni(p);
             if (globeInstanceRef.current && p.latitude && p.longitude) {
