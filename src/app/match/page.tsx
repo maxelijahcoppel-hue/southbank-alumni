@@ -221,7 +221,7 @@ export default function MatchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] pt-20 pb-16 px-4">
+    <div className="min-h-screen bg-[#fafafa] pt-24 pb-16 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -409,7 +409,7 @@ export default function MatchPage() {
                   <Users className="w-7 h-7 text-gray-300" />
                 </div>
                 <p className="text-gray-400 text-sm">
-                  Start selecting your interests on the left to find matching alumni.
+                  Start selecting your interests above to find matching alumni.
                 </p>
               </div>
             )}

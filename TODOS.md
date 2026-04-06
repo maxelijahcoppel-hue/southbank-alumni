@@ -2,4 +2,12 @@
 
 ## P0 — Before Demo
 
-- [ ] **Test Mapbox GL on school laptop** — Load the deployed app on a school laptop and verify the map renders. School firewalls may block Mapbox's tile servers (api.mapbox.com, *.tiles.mapbox.com). If blocked, need a fallback plan (static map image, or switch to react-simple-maps which uses no external CDN). This is the single biggest demo risk.
+- [ ] **Test 3D globe on school laptop** — Load southbank-alumni.vercel.app on a school laptop and verify the globe renders. It uses WebGL (Three.js) which requires GPU support, and loads Earth textures from unpkg.com. If the school blocks unpkg.com or the laptop doesn't support WebGL, the globe won't render.
+
+## Completed
+
+- [x] **Supabase connected** — All pages pull from live database (v1, 2026-04-06)
+- [x] **Admin auth working** — Login, approve, reject all functional (v1, 2026-04-06)
+- [x] **Deployed to Vercel** — southbank-alumni.vercel.app (v1, 2026-04-06)
+- [x] **GitHub repo** — github.com/maxelijahcoppel-hue/southbank-alumni (v1, 2026-04-06)
+- [x] **Filter bug fixed** — Mentoring/contact toggles now narrow results, not widen (v1, 2026-04-06)

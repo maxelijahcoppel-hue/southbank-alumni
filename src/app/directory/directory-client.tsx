@@ -75,7 +75,7 @@ export function DirectoryClient({ alumni }: DirectoryClientProps) {
   return (
     <div className="min-h-screen bg-bg-light">
       {/* Header */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 pt-8 pb-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 pt-24 pb-6">
         <h1 className="text-2xl font-bold text-text-primary mb-1">
           Alumni Directory
         </h1>

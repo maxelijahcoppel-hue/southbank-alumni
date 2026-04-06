@@ -29,7 +29,7 @@ export default async function ProjectsPage() {
   const projects = await getApprovedProjects();
 
   return (
-    <div className="min-h-screen bg-bg-light py-12 px-4">
+    <div className="min-h-screen bg-bg-light pt-24 pb-12 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-start justify-between mb-8">
           <div>
