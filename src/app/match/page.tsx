@@ -178,9 +178,10 @@ export default function MatchPage() {
     if (!hasAnyFilter) return [];
 
     // First apply hard filters (mentoring, contact, gap year)
+    // Rule: open to mentoring implies open to contact
     let filtered = alumni.filter((a) => {
       if (filters.openToMentoring && !a.open_to_mentoring) return false;
-      if (filters.openToContact && !a.open_to_contact) return false;
+      if (filters.openToContact && !a.open_to_contact && !a.open_to_mentoring) return false;
       if (filters.tookGapYear !== null && a.took_gap_year !== filters.tookGapYear) return false;
       return true;
     });

@@ -678,11 +678,15 @@ export default function SubmitPage() {
               <input
                 type="checkbox"
                 checked={openToContact}
-                onChange={(e) => setOpenToContact(e.target.checked)}
+                onChange={(e) => {
+                  if (!e.target.checked && openToMentoring) return;
+                  setOpenToContact(e.target.checked);
+                }}
                 className="mt-0.5 h-4 w-4 rounded border-border text-accent-gold focus:ring-accent-gold"
               />
               <span className="text-sm text-text-primary">
                 I am open to being contacted by current students
+                {openToMentoring && <span className="text-xs text-text-muted ml-1">(required when mentoring)</span>}
               </span>
             </label>
 
@@ -690,7 +694,10 @@ export default function SubmitPage() {
               <input
                 type="checkbox"
                 checked={openToMentoring}
-                onChange={(e) => setOpenToMentoring(e.target.checked)}
+                onChange={(e) => {
+                  setOpenToMentoring(e.target.checked);
+                  if (e.target.checked) setOpenToContact(true);
+                }}
                 className="mt-0.5 h-4 w-4 rounded border-border text-accent-gold focus:ring-accent-gold"
               />
               <span className="text-sm text-text-primary">

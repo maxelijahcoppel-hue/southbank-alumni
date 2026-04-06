@@ -52,7 +52,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         if (a.graduation_year < filters.yearRange[0] || a.graduation_year > filters.yearRange[1]) return false;
       }
       if (filters.gapYearOnly && !a.took_gap_year) return false;
-      if (filters.openToContact && !a.open_to_contact) return false;
+      if (filters.openToContact && !a.open_to_contact && !a.open_to_mentoring) return false;
       if (filters.openToMentoring && !a.open_to_mentoring) return false;
       return true;
     });
