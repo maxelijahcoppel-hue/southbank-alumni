@@ -211,7 +211,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
             Our alumni, around the world
           </h1>
           <p
-            className="text-white/50 text-sm md:text-base text-center max-w-md mb-5"
+            className="text-white/80 text-base md:text-lg text-center max-w-lg mb-5 drop-shadow-md"
             style={{ animation: "fade-in 1.2s ease forwards" }}
           >
             See where Southbank students end up. Click a pin to explore their story.
