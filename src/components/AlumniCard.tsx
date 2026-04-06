@@ -19,15 +19,15 @@ interface AlumniCardProps {
 export function AlumniCard({ alumni, onClose }: AlumniCardProps) {
   return (
     <>
-      {/* Backdrop on mobile */}
+      {/* Backdrop */}
       <div
-        className="md:hidden fixed inset-0 z-30 bg-black/50"
+        className="fixed inset-0 z-[55] bg-black/40 cursor-pointer"
         onClick={onClose}
       />
 
       {/* Card */}
       <div
-        className="fixed z-40 bg-bg-dark/95 backdrop-blur-md border-l border-border-dark overflow-y-auto
+        className="fixed z-[60] bg-[#0f1d32]/98 backdrop-blur-xl border-l border-white/[0.06] overflow-y-auto
           md:top-0 md:right-0 md:w-[380px] md:h-screen
           bottom-0 left-0 right-0 max-h-[85vh] rounded-t-2xl md:rounded-none
           animate-slide-in"
@@ -35,7 +35,7 @@ export function AlumniCard({ alumni, onClose }: AlumniCardProps) {
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/5 border border-border-dark flex items-center justify-center text-text-muted-dark hover:text-text-primary-dark transition-colors"
+          className="absolute top-4 right-4 z-[70] w-9 h-9 rounded-full bg-white/10 border border-white/[0.1] flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition-colors cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>

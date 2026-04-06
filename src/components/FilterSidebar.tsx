@@ -90,12 +90,12 @@ export function FilterSidebar({
 
       {/* Backdrop */}
       {isOpen && (
-        <div className="fixed inset-0 z-30 bg-black/40" onClick={() => setIsOpen(false)} />
+        <div className="fixed inset-0 z-[45] bg-black/40 cursor-pointer" onClick={() => setIsOpen(false)} />
       )}
 
       {/* Panel */}
       <div
-        className={`fixed top-0 left-0 z-40 w-[340px] h-screen bg-[#0f1d32]/98 backdrop-blur-xl border-r border-white/[0.06] transition-transform duration-300 ease-out flex flex-col ${
+        className={`fixed top-0 left-0 z-[50] w-[340px] h-screen bg-[#0f1d32]/98 backdrop-blur-xl border-r border-white/[0.06] transition-transform duration-300 ease-out flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
