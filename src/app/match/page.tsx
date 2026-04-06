@@ -137,6 +137,7 @@ export default function MatchPage() {
   const [filters, setFilters] = useState<MatchFilters>(defaultFilters);
   const [expandedProfile, setExpandedProfile] = useState<string | null>(null);
   const [alumni, setAlumni] = useState<AlumniProfile[]>(sampleAlumni as AlumniProfile[]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchAlumni() {
@@ -145,6 +146,7 @@ export default function MatchPage() {
         .select("*")
         .eq("status", "approved");
       if (data && data.length > 0) setAlumni(data);
+      setIsLoading(false);
     }
     fetchAlumni();
   }, []);
@@ -209,6 +211,24 @@ export default function MatchPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-8">
           {/* Filters panel */}
           <div className="space-y-5">
+            {isLoading && (
+              <>
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 animate-pulse"
+                  >
+                    <div className="h-4 bg-gray-200 rounded w-1/3 mb-2" />
+                    <div className="h-3 bg-gray-200 rounded w-2/3 mb-4" />
+                    <div className="flex flex-wrap gap-1.5">
+                      {Array.from({ length: 6 }).map((_, j) => (
+                        <div key={j} className="h-7 bg-gray-200 rounded-full w-16" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
             {/* HL Subjects */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
               <h3 className="text-sm font-semibold text-gray-900 mb-1">Your HL Subjects</h3>

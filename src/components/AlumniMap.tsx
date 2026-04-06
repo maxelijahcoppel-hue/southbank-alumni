@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import {
   ComposableMap,
   Geographies,
@@ -45,6 +45,12 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   const [selectedAlumni, setSelectedAlumni] = useState<AlumniProfile | null>(null);
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [pinsVisible, setPinsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setPinsVisible(true), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredAlumni = useMemo(() => {
     return alumni.filter((a) => {
@@ -132,29 +138,38 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
             </Geographies>
 
             {filteredAlumni.map(
-              (alumnus) =>
+              (alumnus, index) =>
                 alumnus.latitude !== null &&
                 alumnus.longitude !== null && (
                   <Marker key={alumnus.id} coordinates={[alumnus.longitude, alumnus.latitude]}>
-                    {/* Glow ring */}
-                    <circle
-                      r={hoveredId === alumnus.id ? 14 : 10}
-                      fill="rgba(212, 168, 67, 0.08)"
-                      style={{ transition: "r 300ms ease" }}
-                    />
-                    {/* Pin */}
-                    <circle
-                      r={hoveredId === alumnus.id ? 5 : 3.5}
-                      fill="#d4a843"
+                    <g
                       style={{
-                        cursor: "pointer",
-                        filter: "drop-shadow(0 0 4px rgba(212, 168, 67, 0.5))",
-                        transition: "r 200ms ease",
+                        opacity: pinsVisible ? 1 : 0,
+                        transform: pinsVisible ? "scale(1)" : "scale(0)",
+                        transition: `opacity 400ms ease ${index * 100}ms, transform 400ms ease ${index * 100}ms`,
+                        transformOrigin: "center",
                       }}
-                      onClick={() => handleMarkerClick(alumnus)}
-                      onMouseEnter={() => setHoveredId(alumnus.id)}
-                      onMouseLeave={() => setHoveredId(null)}
-                    />
+                    >
+                      {/* Glow ring */}
+                      <circle
+                        r={hoveredId === alumnus.id ? 14 : 10}
+                        fill="rgba(212, 168, 67, 0.08)"
+                        style={{ transition: "r 300ms ease" }}
+                      />
+                      {/* Pin */}
+                      <circle
+                        r={hoveredId === alumnus.id ? 5 : 3.5}
+                        fill="#d4a843"
+                        style={{
+                          cursor: "pointer",
+                          filter: "drop-shadow(0 0 4px rgba(212, 168, 67, 0.5))",
+                          transition: "r 200ms ease",
+                        }}
+                        onClick={() => handleMarkerClick(alumnus)}
+                        onMouseEnter={() => setHoveredId(alumnus.id)}
+                        onMouseLeave={() => setHoveredId(null)}
+                      />
+                    </g>
                   </Marker>
                 )
             )}

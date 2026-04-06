@@ -11,6 +11,7 @@ const links = [
   { href: "/match", label: "Find Your Match" },
   { href: "/projects", label: "Projects" },
   { href: "/events", label: "Events" },
+  { href: "/about", label: "About" },
 ];
 
 export function Navigation() {

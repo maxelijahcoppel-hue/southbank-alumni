@@ -14,7 +14,7 @@ export function AlumniGridCard({ alumni, onClick }: AlumniGridCardProps) {
   return (
     <button
       onClick={onClick}
-      className="w-full text-left rounded-xl bg-white shadow-sm p-6 border border-border hover:shadow-md hover:border-accent-gold/30 transition-all duration-200 group"
+      className="w-full text-left rounded-xl bg-white shadow-sm p-6 border border-border hover:shadow-md hover:border-accent-gold/30 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 ease-out group"
     >
       <div className="space-y-3">
         {/* Name */}

@@ -11,6 +11,30 @@ interface DirectoryClientProps {
   alumni: AlumniProfile[];
 }
 
+function DirectorySkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div
+          key={i}
+          className="rounded-xl bg-white border border-border p-6 animate-pulse"
+        >
+          <div className="space-y-3">
+            <div className="h-5 bg-gray-200 rounded w-2/3" />
+            <div className="h-4 bg-gray-200 rounded w-4/5" />
+            <div className="h-4 bg-gray-200 rounded w-3/5" />
+            <div className="h-3 bg-gray-200 rounded w-1/4" />
+            <div className="flex gap-1.5 pt-1">
+              <div className="h-5 bg-gray-200 rounded-md w-16" />
+              <div className="h-5 bg-gray-200 rounded-md w-20" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function DirectoryClient({ alumni }: DirectoryClientProps) {
   const [search, setSearch] = useState("");
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
@@ -128,7 +152,9 @@ export function DirectoryClient({ alumni }: DirectoryClientProps) {
 
       {/* Grid */}
       <div className="max-w-6xl mx-auto px-4 sm:px-8 pb-16">
-        {filteredAlumni.length === 0 ? (
+        {alumni.length === 0 ? (
+          <DirectorySkeleton />
+        ) : filteredAlumni.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-text-muted text-base">
               No alumni match your search.
