@@ -189,7 +189,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
     <div
       className="relative w-full h-screen overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, #0f1b2e 0%, #1a2744 25%, #1e3a5f 50%, #2a4a6b 70%, #1a3352 100%)",
+        background: "linear-gradient(160deg, #0c1929 0%, #152742 20%, #1a3355 35%, #2d4a6a 50%, #4a3f5e 65%, #6b4c50 78%, #8c5a3e 88%, #c47a3a 95%, #d4904a 100%)",
       }}
     >
       {/* Globe */}
