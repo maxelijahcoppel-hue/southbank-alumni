@@ -3,14 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Map, Users, Heart, Lightbulb, Calendar, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const links = [
-  { href: "/", label: "Map", icon: Map },
-  { href: "/directory", label: "Directory", icon: Users },
-  { href: "/match", label: "Find Your Match", icon: Heart },
-  { href: "/projects", label: "Projects", icon: Lightbulb },
-  { href: "/events", label: "Events", icon: Calendar },
+  { href: "/", label: "Map" },
+  { href: "/directory", label: "Directory" },
+  { href: "/match", label: "Find Your Match" },
+  { href: "/projects", label: "Projects" },
+  { href: "/events", label: "Events" },
 ];
 
 export function Navigation() {
@@ -25,37 +25,36 @@ export function Navigation() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-colors ${
         isMapPage
-          ? "bg-[#0a1628]/95 backdrop-blur-sm border-b border-white/[0.08]"
-          : "bg-white border-b border-gray-200"
+          ? "bg-transparent"
+          : "bg-white/95 backdrop-blur-md border-b border-gray-100"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between h-14">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-16">
         <Link
           href="/"
-          className={`text-lg font-bold tracking-tight ${
-            isMapPage ? "text-white" : "text-gray-900"
+          className={`text-[15px] font-semibold tracking-tight ${
+            isMapPage ? "text-white/90" : "text-gray-900"
           }`}
         >
-          Southbank{" "}
-          <span className="text-[#d4a843]">Alumni</span>
+          Southbank <span className="text-[#d4a843]">Alumni</span>
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-6">
+        {/* Desktop */}
+        <div className="hidden md:flex items-center gap-1">
           {links.map((link) => {
             const active = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-opacity ${
+                className={`px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all ${
                   isMapPage
                     ? active
-                      ? "text-[#d4a843] opacity-100"
-                      : "text-white/60 hover:text-white/90"
+                      ? "text-white bg-white/10"
+                      : "text-white/50 hover:text-white/80 hover:bg-white/5"
                     : active
-                      ? "text-[#d4a843] opacity-100"
-                      : "text-gray-500 hover:text-gray-900"
+                      ? "text-gray-900 bg-gray-100"
+                      : "text-gray-400 hover:text-gray-700 hover:bg-gray-50"
                 }`}
               >
                 {link.label}
@@ -64,7 +63,11 @@ export function Navigation() {
           })}
           <Link
             href="/submit"
-            className="text-sm font-medium px-4 py-2 rounded-lg bg-[#d4a843] text-[#0a1628] hover:bg-[#d4a843]/90 transition-colors"
+            className={`ml-3 px-4 py-1.5 rounded-lg text-[13px] font-medium transition-all ${
+              isMapPage
+                ? "text-white/70 border border-white/15 hover:text-white hover:border-white/30"
+                : "text-gray-500 border border-gray-200 hover:text-gray-700 hover:border-gray-300"
+            }`}
           >
             Submit Profile
           </Link>
@@ -72,46 +75,44 @@ export function Navigation() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden p-2"
+          className="md:hidden p-2 -mr-2"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? (
-            <X className={isMapPage ? "text-white" : "text-gray-900"} size={20} />
+            <X className={isMapPage ? "text-white/70" : "text-gray-500"} size={20} />
           ) : (
-            <Menu className={isMapPage ? "text-white" : "text-gray-900"} size={20} />
+            <Menu className={isMapPage ? "text-white/70" : "text-gray-500"} size={20} />
           )}
         </button>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile menu */}
       {mobileOpen && (
         <div
           className={`md:hidden border-t ${
             isMapPage
-              ? "bg-[#0a1628]/98 border-white/[0.08]"
-              : "bg-white border-gray-200"
+              ? "bg-[#070e1a]/98 backdrop-blur-xl border-white/[0.06]"
+              : "bg-white border-gray-100"
           }`}
         >
-          <div className="px-4 py-3 flex flex-col gap-1">
+          <div className="px-4 py-2">
             {links.map((link) => {
               const active = pathname === link.href;
-              const Icon = link.icon;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     isMapPage
                       ? active
-                        ? "text-[#d4a843] bg-white/5"
-                        : "text-white/60 hover:text-white/90 hover:bg-white/5"
+                        ? "text-white bg-white/10"
+                        : "text-white/50 hover:text-white/80"
                       : active
-                        ? "text-[#d4a843] bg-[#d4a843]/5"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        ? "text-gray-900 bg-gray-50"
+                        : "text-gray-500 hover:text-gray-700"
                   }`}
                 >
-                  <Icon size={16} />
                   {link.label}
                 </Link>
               );
@@ -119,7 +120,11 @@ export function Navigation() {
             <Link
               href="/submit"
               onClick={() => setMobileOpen(false)}
-              className="mt-2 text-center text-sm font-medium px-4 py-2.5 rounded-lg bg-[#d4a843] text-[#0a1628]"
+              className={`block mt-1 px-3 py-2.5 rounded-lg text-sm font-medium ${
+                isMapPage
+                  ? "text-[#d4a843]"
+                  : "text-[#d4a843]"
+              }`}
             >
               Submit Profile
             </Link>

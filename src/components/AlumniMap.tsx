@@ -12,7 +12,6 @@ import { AlumniProfile } from "@/lib/types";
 import { AlumniCard } from "./AlumniCard";
 import { FilterSidebar } from "./FilterSidebar";
 import { TimelineSlider } from "./TimelineSlider";
-import { Users, Globe, GraduationCap } from "lucide-react";
 
 const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -44,25 +43,21 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       if (
         filters.hlSubjects.length > 0 &&
         !filters.hlSubjects.some((s) => a.hl_subjects.includes(s))
-      ) {
+      )
         return false;
-      }
       if (
         filters.universitySearch &&
         !a.university.toLowerCase().includes(filters.universitySearch.toLowerCase())
-      ) {
+      )
         return false;
-      }
       if (
         filters.careerSearch &&
         !a.current_profession.toLowerCase().includes(filters.careerSearch.toLowerCase())
-      ) {
+      )
         return false;
-      }
       if (a.graduation_year !== null) {
-        if (a.graduation_year < filters.yearRange[0] || a.graduation_year > filters.yearRange[1]) {
+        if (a.graduation_year < filters.yearRange[0] || a.graduation_year > filters.yearRange[1])
           return false;
-        }
       }
       return true;
     });
@@ -83,81 +78,111 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[#0a1628]">
-      {/* Map */}
-      <ComposableMap
-        projection="geoMercator"
-        projectionConfig={{
-          scale: 130,
-          center: [10, 20],
+    <div className="relative w-full h-screen overflow-hidden bg-[#070e1a]">
+      {/* Warm gradient overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(212,168,67,0.03) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 20% 80%, rgba(74,144,217,0.02) 0%, transparent 60%)",
         }}
-        style={{ width: "100%", height: "100%" }}
-      >
-        <ZoomableGroup>
-          <Geographies geography={GEO_URL}>
-            {({ geographies }) =>
-              geographies.map((geo) => (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  fill="rgba(255,255,255,0.04)"
-                  stroke="rgba(255,255,255,0.12)"
-                  strokeWidth={0.5}
-                  style={{
-                    default: { outline: "none" },
-                    hover: { fill: "rgba(255,255,255,0.08)", outline: "none" },
-                    pressed: { outline: "none" },
-                  }}
-                />
-              ))
-            }
-          </Geographies>
+      />
 
-          {filteredAlumni.map(
-            (alumnus) =>
-              alumnus.latitude !== null &&
-              alumnus.longitude !== null && (
-                <Marker
-                  key={alumnus.id}
-                  coordinates={[alumnus.longitude, alumnus.latitude]}
-                >
-                  <circle
-                    r={hoveredId === alumnus.id ? 6 : 4}
-                    fill="#d4a843"
-                    stroke="#d4a843"
-                    strokeWidth={0.5}
-                    opacity={0.9}
+      {/* Map */}
+      <div className="absolute inset-0">
+        <ComposableMap
+          projection="geoMercator"
+          projectionConfig={{ scale: 130, center: [10, 20] }}
+          style={{ width: "100%", height: "100%" }}
+        >
+          <ZoomableGroup>
+            <Geographies geography={GEO_URL}>
+              {({ geographies }) =>
+                geographies.map((geo) => (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    fill="rgba(255,255,255,0.03)"
+                    stroke="rgba(255,255,255,0.08)"
+                    strokeWidth={0.4}
                     style={{
-                      cursor: "pointer",
-                      filter: "drop-shadow(0 0 6px rgba(212, 168, 67, 0.6))",
-                      transition: "r 200ms ease",
+                      default: { outline: "none" },
+                      hover: { fill: "rgba(255,255,255,0.06)", outline: "none" },
+                      pressed: { outline: "none" },
                     }}
-                    onClick={() => handleMarkerClick(alumnus)}
-                    onMouseEnter={() => setHoveredId(alumnus.id)}
-                    onMouseLeave={() => setHoveredId(null)}
                   />
-                </Marker>
-              )
-          )}
-        </ZoomableGroup>
-      </ComposableMap>
+                ))
+              }
+            </Geographies>
 
-      {/* Filter Sidebar */}
+            {filteredAlumni.map(
+              (alumnus) =>
+                alumnus.latitude !== null &&
+                alumnus.longitude !== null && (
+                  <Marker key={alumnus.id} coordinates={[alumnus.longitude, alumnus.latitude]}>
+                    {/* Glow ring */}
+                    <circle
+                      r={hoveredId === alumnus.id ? 14 : 10}
+                      fill="rgba(212, 168, 67, 0.08)"
+                      style={{ transition: "r 300ms ease" }}
+                    />
+                    {/* Pin */}
+                    <circle
+                      r={hoveredId === alumnus.id ? 5 : 3.5}
+                      fill="#d4a843"
+                      style={{
+                        cursor: "pointer",
+                        filter: "drop-shadow(0 0 4px rgba(212, 168, 67, 0.5))",
+                        transition: "r 200ms ease",
+                      }}
+                      onClick={() => handleMarkerClick(alumnus)}
+                      onMouseEnter={() => setHoveredId(alumnus.id)}
+                      onMouseLeave={() => setHoveredId(null)}
+                    />
+                  </Marker>
+                )
+            )}
+          </ZoomableGroup>
+        </ComposableMap>
+      </div>
+
+      {/* Filter button (floating) */}
       <FilterSidebar
         filters={filters}
         onFiltersChange={setFilters}
         onClear={() => setFilters(defaultFilters)}
       />
 
-      {/* Stats Overlay */}
-      <div className="absolute bottom-8 left-8 z-10 hidden md:flex gap-4">
-        <StatItem icon={<Users className="w-4 h-4" />} value={stats.total} label="Alumni" />
-        <StatItem icon={<Globe className="w-4 h-4" />} value={stats.countries} label="Countries" />
-        <StatItem
-          icon={<GraduationCap className="w-4 h-4" />}
-          value={stats.universities}
-          label="Universities"
-        />
+      {/* Stats - bottom left */}
+      <div className="absolute bottom-10 left-6 z-10 hidden md:flex items-end gap-8">
+        <div>
+          <p className="font-mono text-4xl font-bold text-white tracking-tight">{stats.total}</p>
+          <p className="text-[11px] text-white/35 uppercase tracking-[0.2em] mt-1">Alumni</p>
+        </div>
+        <div>
+          <p className="font-mono text-4xl font-bold text-white tracking-tight">{stats.countries}</p>
+          <p className="text-[11px] text-white/35 uppercase tracking-[0.2em] mt-1">Countries</p>
+        </div>
+        <div>
+          <p className="font-mono text-4xl font-bold text-white tracking-tight">{stats.universities}</p>
+          <p className="text-[11px] text-white/35 uppercase tracking-[0.2em] mt-1">Universities</p>
+        </div>
+      </div>
+
+      {/* Mobile stats */}
+      <div className="md:hidden absolute bottom-24 left-0 right-0 z-10 flex justify-center gap-6">
+        <div className="text-center">
+          <p className="font-mono text-2xl font-bold text-white">{stats.total}</p>
+          <p className="text-[10px] text-white/35 uppercase tracking-widest">Alumni</p>
+        </div>
+        <div className="text-center">
+          <p className="font-mono text-2xl font-bold text-white">{stats.countries}</p>
+          <p className="text-[10px] text-white/35 uppercase tracking-widest">Countries</p>
+        </div>
+        <div className="text-center">
+          <p className="font-mono text-2xl font-bold text-white">{stats.universities}</p>
+          <p className="text-[10px] text-white/35 uppercase tracking-widest">Universities</p>
+        </div>
       </div>
 
       {/* Timeline Slider */}
@@ -169,13 +194,13 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       {/* Empty State */}
       {filteredAlumni.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-          <div className="bg-[#0a1628]/90 backdrop-blur-md rounded-xl px-8 py-6 border border-white/[0.08] text-center pointer-events-auto">
-            <p className="text-white/70 text-sm mb-3">
+          <div className="bg-[#0f1d32]/95 backdrop-blur-md rounded-2xl px-10 py-8 border border-white/[0.06] text-center pointer-events-auto max-w-sm">
+            <p className="text-white/60 text-sm mb-4 leading-relaxed">
               No alumni match these filters. Try broadening your search.
             </p>
             <button
               onClick={() => setFilters(defaultFilters)}
-              className="text-sm font-medium px-4 py-2 rounded-lg bg-[#d4a843] text-[#0a1628] hover:bg-[#d4a843]/90"
+              className="text-sm font-medium px-5 py-2.5 rounded-full bg-white/10 text-white hover:bg-white/15 transition-colors"
             >
               Clear filters
             </button>
@@ -183,30 +208,10 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         </div>
       )}
 
-      {/* Alumni Card Slide-in */}
+      {/* Alumni Card */}
       {selectedAlumni && (
         <AlumniCard alumni={selectedAlumni} onClose={() => setSelectedAlumni(null)} />
       )}
-    </div>
-  );
-}
-
-function StatItem({
-  icon,
-  value,
-  label,
-}: {
-  icon: React.ReactNode;
-  value: number;
-  label: string;
-}) {
-  return (
-    <div className="flex flex-col items-center gap-1 bg-[#0a1628]/80 backdrop-blur-md rounded-xl px-4 py-3 border border-white/[0.08]">
-      <div className="flex items-center gap-1.5 text-[#d4a843]">{icon}</div>
-      <span className="font-mono text-2xl font-bold leading-none text-white">
-        {value}
-      </span>
-      <span className="text-xs text-white/50 uppercase tracking-wider">{label}</span>
     </div>
   );
 }
