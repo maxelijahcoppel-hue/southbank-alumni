@@ -92,45 +92,41 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .pointOfView({ lat: LONDON.lat, lng: LONDON.lng, altitude: 2.5 }, 0)
         .width(globeRef.current.clientWidth)
         .height(globeRef.current.clientHeight)
-        // Custom 3D pushpin markers using Three.js geometry
-        .customLayerData([])
-        .customThreeObject(() => {
-
+        // 3D pushpin markers using objectsData
+        .objectsData([])
+        .objectLat((d: unknown) => (d as AlumniProfile).latitude ?? 0)
+        .objectLng((d: unknown) => (d as AlumniProfile).longitude ?? 0)
+        .objectAltitude(0)
+        .objectThreeObject(() => {
           const group = new THREE.Group();
-          const pinColor = 0xd4a843;
-          const pinMaterial = new THREE.MeshLambertMaterial({ color: pinColor });
-          const highlightMaterial = new THREE.MeshLambertMaterial({ color: 0xe8c65a });
-          const needleMaterial = new THREE.MeshLambertMaterial({ color: 0x999999 });
 
-          // Needle (thin cylinder from surface)
-          const needleGeo = new THREE.CylinderGeometry(0.15, 0.05, 4, 8);
-          const needle = new THREE.Mesh(needleGeo, needleMaterial);
-          needle.position.y = 2;
+          // Needle — thin cone from surface pointing up
+          const needleGeo = new THREE.ConeGeometry(0.12, 3, 8);
+          const needleMat = new THREE.MeshPhongMaterial({ color: 0x888888, shininess: 80 });
+          const needle = new THREE.Mesh(needleGeo, needleMat);
+          needle.position.y = 1.5;
           group.add(needle);
 
-          // Pin head (sphere on top)
-          const headGeo = new THREE.SphereGeometry(1.2, 16, 12);
-          const head = new THREE.Mesh(headGeo, pinMaterial);
-          head.position.y = 5;
+          // Pin head — sphere sitting on top of needle
+          const headGeo = new THREE.SphereGeometry(0.9, 16, 12);
+          const headMat = new THREE.MeshPhongMaterial({ color: 0xd4a843, shininess: 100 });
+          const head = new THREE.Mesh(headGeo, headMat);
+          head.position.y = 3.5;
           group.add(head);
 
-          // Highlight on pin head
-          const highlightGeo = new THREE.SphereGeometry(0.5, 8, 8);
-          const highlight = new THREE.Mesh(highlightGeo, highlightMaterial);
-          highlight.position.set(-0.4, 5.6, 0.4);
-          group.add(highlight);
+          // Highlight spot on pin head
+          const hlGeo = new THREE.SphereGeometry(0.3, 8, 8);
+          const hlMat = new THREE.MeshPhongMaterial({ color: 0xffe88a, shininess: 120 });
+          const hl = new THREE.Mesh(hlGeo, hlMat);
+          hl.position.set(-0.3, 4.0, 0.3);
+          group.add(hl);
+
+          // Scale down to fit globe
+          group.scale.set(0.4, 0.4, 0.4);
 
           return group;
         })
-        .customThreeObjectUpdate((obj: any, d: unknown) => {
-          const p = d as AlumniProfile;
-          if (!p.latitude || !p.longitude) return;
-          Object.assign(obj.position, globe.getCoords(p.latitude, p.longitude, 0));
-          // Orient pin to point outward from globe center
-          obj.lookAt(0, 0, 0);
-          obj.rotateX(Math.PI / 2);
-        })
-        .onCustomLayerClick((d: unknown) => {
+        .onObjectClick((d: unknown) => {
           const p = d as AlumniProfile;
           setSelectedAlumni(p);
           if (globeInstanceRef.current && p.latitude && p.longitude) {
@@ -140,7 +136,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
             );
           }
         })
-        .customLayerLabel((d: unknown) => {
+        .objectLabel((d: unknown) => {
           const p = d as AlumniProfile;
           return `
             <div style="
@@ -227,7 +223,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   useEffect(() => {
     if (!globeInstanceRef.current || !globeReady) return;
     const validAlumni = filteredAlumni.filter((a) => a.latitude !== null && a.longitude !== null);
-    globeInstanceRef.current.customLayerData(validAlumni).arcsData(validAlumni);
+    globeInstanceRef.current.objectsData(validAlumni).arcsData(validAlumni);
   }, [filteredAlumni, globeReady]);
 
   return (
