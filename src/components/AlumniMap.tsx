@@ -143,10 +143,9 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .arcDashAnimateTime(2500)
         .arcStroke(0.3);
 
-      // Warm gradient background — rendered via CSS, globe bg transparent
+      // Set the WebGL background to a warm deep blue that blends with the gradient overlay
       const renderer = globe.renderer();
-      renderer.setClearColor(0x000000, 0);
-      renderer.domElement.style.background = "transparent";
+      renderer.setClearColor(0x0f1e33, 1);
 
       // Controls
       const controls = globe.controls();
@@ -186,14 +185,22 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   }, [filteredAlumni, globeReady]);
 
   return (
-    <div
-      className="relative w-full h-screen overflow-hidden"
-      style={{
-        background: "linear-gradient(160deg, #0c1929 0%, #152742 20%, #1a3355 35%, #2d4a6a 50%, #4a3f5e 65%, #6b4c50 78%, #8c5a3e 88%, #c47a3a 95%, #d4904a 100%)",
-      }}
-    >
+    <div className="relative w-full h-screen overflow-hidden bg-[#0f1e33]">
       {/* Globe */}
       <div ref={globeRef} className="absolute inset-0" />
+
+      {/* Sunset gradient overlays around edges */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          background: `
+            radial-gradient(ellipse 120% 80% at 50% 50%, transparent 30%, rgba(15,30,51,0.4) 60%, rgba(15,30,51,0.9) 100%),
+            linear-gradient(to bottom, transparent 40%, rgba(139,69,19,0.08) 70%, rgba(210,130,50,0.12) 85%, rgba(210,140,60,0.18) 100%),
+            linear-gradient(to right, rgba(80,40,80,0.06) 0%, transparent 30%, transparent 70%, rgba(180,100,40,0.08) 100%),
+            linear-gradient(to top, rgba(200,120,50,0.1) 0%, transparent 25%)
+          `,
+        }}
+      />
 
       {/* Loading state before globe is ready */}
       {!globeReady && (
