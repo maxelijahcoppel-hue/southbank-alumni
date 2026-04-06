@@ -27,7 +27,6 @@ const defaultFilters: Filters = {
   openToMentoring: false,
 };
 
-// London coordinates for initial view
 const LONDON = { lat: 51.5074, lng: -0.1278 };
 
 interface AlumniMapProps {
@@ -41,6 +40,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const globeInstanceRef = useRef<any>(null);
   const [globeReady, setGlobeReady] = useState(false);
+  const [introVisible, setIntroVisible] = useState(true);
 
   const filteredAlumni = useMemo(() => {
     return alumni.filter((a) => {
@@ -64,6 +64,14 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
     return { total: filteredAlumni.length, countries: countries.size, universities: universities.size };
   }, [filteredAlumni]);
 
+  // Fade out intro text after globe loads
+  useEffect(() => {
+    if (globeReady) {
+      const timer = setTimeout(() => setIntroVisible(false), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [globeReady]);
+
   // Initialize globe
   useEffect(() => {
     if (!globeRef.current) return;
@@ -79,44 +87,73 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .globeImageUrl("//unpkg.com/three-globe/example/img/earth-night.jpg")
         .bumpImageUrl("//unpkg.com/three-globe/example/img/earth-topology.png")
         .backgroundImageUrl("//unpkg.com/three-globe/example/img/night-sky.png")
-        .atmosphereColor("rgba(212, 168, 67, 0.15)")
-        .atmosphereAltitude(0.2)
-        .pointOfView({ lat: LONDON.lat, lng: LONDON.lng, altitude: 2.2 }, 0)
+        .atmosphereColor("rgba(212, 168, 67, 0.12)")
+        .atmosphereAltitude(0.25)
+        .pointOfView({ lat: LONDON.lat, lng: LONDON.lng, altitude: 2.5 }, 0)
         .width(globeRef.current.clientWidth)
         .height(globeRef.current.clientHeight)
-        // Points (alumni pins)
+        // Points (alumni pins) — larger and with labels
         .pointsData([])
         .pointLat((d: unknown) => (d as AlumniProfile).latitude ?? 0)
         .pointLng((d: unknown) => (d as AlumniProfile).longitude ?? 0)
         .pointColor(() => "#d4a843")
-        .pointAltitude(0.01)
-        .pointRadius(0.4)
+        .pointAltitude(0.02)
+        .pointRadius(0.6)
         .pointsMerge(false)
         .onPointClick((point: unknown) => {
-          setSelectedAlumni(point as AlumniProfile);
+          const p = point as AlumniProfile;
+          setSelectedAlumni(p);
+          if (globeInstanceRef.current && p.latitude && p.longitude) {
+            globeInstanceRef.current.pointOfView(
+              { lat: p.latitude, lng: p.longitude, altitude: 1.5 },
+              1000
+            );
+          }
         })
-        // Arcs from London to each alumni
+        // HTML labels on hover
+        .pointLabel((d: unknown) => {
+          const p = d as AlumniProfile;
+          return `
+            <div style="
+              background: rgba(15,29,50,0.95);
+              backdrop-filter: blur(12px);
+              border: 1px solid rgba(255,255,255,0.08);
+              border-radius: 12px;
+              padding: 12px 16px;
+              color: white;
+              font-family: system-ui, sans-serif;
+              min-width: 180px;
+              pointer-events: none;
+            ">
+              <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">${p.full_name}</div>
+              <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 2px;">${p.university}</div>
+              <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 6px;">${p.current_profession}</div>
+              <div style="font-size: 11px; color: #d4a843;">Click to view profile</div>
+            </div>
+          `;
+        })
+        // Arcs from London
         .arcsData([])
         .arcStartLat(() => LONDON.lat)
         .arcStartLng(() => LONDON.lng)
         .arcEndLat((d: unknown) => (d as AlumniProfile).latitude ?? 0)
         .arcEndLng((d: unknown) => (d as AlumniProfile).longitude ?? 0)
-        .arcColor(() => ["rgba(212, 168, 67, 0.3)", "rgba(212, 168, 67, 0.05)"])
+        .arcColor(() => ["rgba(212, 168, 67, 0.25)", "rgba(212, 168, 67, 0.02)"])
         .arcDashLength(0.4)
         .arcDashGap(0.2)
-        .arcDashAnimateTime(2000)
+        .arcDashAnimateTime(2500)
         .arcStroke(0.3);
 
-      // Customize the renderer
+      // Customize renderer — match the page background
       const renderer = globe.renderer();
       renderer.setClearColor(0x070e1a, 1);
 
-      // Customize controls
+      // Controls
       const controls = globe.controls();
       controls.autoRotate = true;
-      controls.autoRotateSpeed = 0.3;
+      controls.autoRotateSpeed = 0.25;
       controls.enableZoom = true;
-      controls.minDistance = 150;
+      controls.minDistance = 120;
       controls.maxDistance = 500;
 
       globeInstanceRef.current = globe;
@@ -132,7 +169,6 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
     };
 
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
       if (globe) {
@@ -142,40 +178,54 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
     };
   }, []);
 
-  // Update points and arcs when filtered alumni change
+  // Update data when filters change
   useEffect(() => {
     if (!globeInstanceRef.current || !globeReady) return;
-
     const validAlumni = filteredAlumni.filter((a) => a.latitude !== null && a.longitude !== null);
-
-    globeInstanceRef.current
-      .pointsData(validAlumni)
-      .arcsData(validAlumni);
+    globeInstanceRef.current.pointsData(validAlumni).arcsData(validAlumni);
   }, [filteredAlumni, globeReady]);
-
-  const handleMarkerClick = useCallback((alumnus: AlumniProfile) => {
-    setSelectedAlumni(alumnus);
-    // Fly to the clicked alumni
-    if (globeInstanceRef.current && alumnus.latitude && alumnus.longitude) {
-      globeInstanceRef.current.pointOfView(
-        { lat: alumnus.latitude, lng: alumnus.longitude, altitude: 1.5 },
-        1000
-      );
-    }
-  }, []);
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-[#070e1a]">
-      {/* Globe container */}
+      {/* Globe */}
       <div ref={globeRef} className="absolute inset-0" />
 
-      {/* Gradient overlay at top for nav readability */}
+      {/* Loading state before globe is ready */}
+      {!globeReady && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
+          <div className="w-16 h-16 rounded-full border-2 border-[#d4a843]/20 border-t-[#d4a843] animate-spin mb-6" />
+          <p className="text-white/30 text-sm">Loading globe...</p>
+        </div>
+      )}
+
+      {/* Intro text — fades out after 4 seconds */}
+      {introVisible && globeReady && (
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none transition-opacity duration-1000"
+          style={{ opacity: introVisible ? 1 : 0 }}
+        >
+          <h1
+            className="text-white/90 text-4xl md:text-5xl font-bold tracking-tight text-center mb-3"
+            style={{ animation: "fade-in 1s ease forwards" }}
+          >
+            From Westminster to the world
+          </h1>
+          <p
+            className="text-white/40 text-base md:text-lg text-center"
+            style={{ animation: "fade-in 1.5s ease forwards" }}
+          >
+            Explore where Southbank alumni are making their mark
+          </p>
+        </div>
+      )}
+
+      {/* Top gradient for nav readability */}
       <div
-        className="absolute top-0 left-0 right-0 h-32 pointer-events-none z-[1]"
-        style={{ background: "linear-gradient(to bottom, rgba(7,14,26,0.6), transparent)" }}
+        className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-[1]"
+        style={{ background: "linear-gradient(to bottom, rgba(7,14,26,0.5), transparent)" }}
       />
 
-      {/* Filter button */}
+      {/* Filters */}
       <FilterSidebar
         filters={filters}
         onFiltersChange={setFilters}
@@ -183,7 +233,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         alumni={alumni}
       />
 
-      {/* Stats - bottom left */}
+      {/* Stats */}
       <div className="absolute bottom-10 left-6 z-10 hidden md:flex items-end gap-8">
         <div>
           <p className="font-mono text-4xl font-bold text-white tracking-tight">{stats.total}</p>
@@ -215,13 +265,11 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         </div>
       </div>
 
-      {/* Empty State */}
-      {filteredAlumni.length === 0 && (
+      {/* Empty state */}
+      {filteredAlumni.length === 0 && globeReady && (
         <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
           <div className="bg-[#0f1d32]/95 backdrop-blur-md rounded-2xl px-10 py-8 border border-white/[0.06] text-center pointer-events-auto max-w-sm">
-            <p className="text-white/60 text-sm mb-4 leading-relaxed">
-              No alumni match these filters. Try broadening your search.
-            </p>
+            <p className="text-white/60 text-sm mb-4">No alumni match these filters.</p>
             <button
               onClick={() => setFilters(defaultFilters)}
               className="text-sm font-medium px-5 py-2.5 rounded-full bg-white/10 text-white hover:bg-white/15 transition-colors"
