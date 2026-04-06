@@ -143,18 +143,18 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .arcDashAnimateTime(2500)
         .arcStroke(0.3);
 
-      // Deep forest background
+      // Light blue gradient background
       const renderer = globe.renderer();
-      renderer.setClearColor(0x041510, 1);
+      renderer.setClearColor(0x0a1628, 1);
 
-      // Bright but not washed out
+      // Vivid but realistic
       const scene = globe.scene();
       scene.children.forEach((child: { type?: string; intensity?: number; color?: { set?: (c: string) => void } }) => {
         if (child.type === "AmbientLight") {
-          child.intensity = 1.4;
+          child.intensity = 1.8;
         }
         if (child.type === "DirectionalLight") {
-          child.intensity = 1.2;
+          child.intensity = 1.4;
           child.color?.set?.("#ffffff");
         }
       });
@@ -201,21 +201,20 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   }, [filteredAlumni, globeReady]);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[#041510]">
+    <div className="relative w-full h-screen overflow-hidden bg-[#0a1628]">
       {/* Globe */}
       <div ref={globeRef} className="absolute inset-0" />
 
-      {/* Vibrant gradient overlays */}
+      {/* Light blue gradient overlays */}
       <div
         className="absolute inset-0 pointer-events-none z-[1]"
         style={{
           background: `
-            radial-gradient(ellipse 100% 70% at 50% 50%, transparent 20%, rgba(4,21,16,0.3) 50%, rgba(4,21,16,0.85) 100%),
-            radial-gradient(ellipse 80% 60% at 15% 85%, rgba(16,120,60,0.2) 0%, transparent 60%),
-            radial-gradient(ellipse 70% 50% at 85% 80%, rgba(20,90,70,0.18) 0%, transparent 55%),
-            radial-gradient(ellipse 60% 40% at 50% 95%, rgba(25,140,70,0.15) 0%, transparent 50%),
-            radial-gradient(ellipse 50% 50% at 10% 20%, rgba(10,80,50,0.1) 0%, transparent 50%),
-            linear-gradient(to bottom, rgba(5,30,20,0.3) 0%, transparent 15%, transparent 70%, rgba(15,100,50,0.12) 100%)
+            radial-gradient(ellipse 100% 70% at 50% 50%, transparent 20%, rgba(10,22,40,0.3) 50%, rgba(10,22,40,0.85) 100%),
+            radial-gradient(ellipse 90% 70% at 50% 100%, rgba(30,80,140,0.15) 0%, transparent 60%),
+            radial-gradient(ellipse 80% 60% at 15% 80%, rgba(40,100,180,0.1) 0%, transparent 55%),
+            radial-gradient(ellipse 70% 50% at 85% 75%, rgba(50,120,200,0.08) 0%, transparent 50%),
+            radial-gradient(ellipse 120% 40% at 50% 0%, rgba(20,60,120,0.12) 0%, transparent 50%)
           `,
         }}
       />
@@ -261,7 +260,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       {/* Top gradient for nav readability */}
       <div
         className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-[1]"
-        style={{ background: "linear-gradient(to bottom, rgba(4,21,16,0.7), transparent)" }}
+        style={{ background: "linear-gradient(to bottom, rgba(10,22,40,0.6), transparent)" }}
       />
 
       {/* Filters */}
