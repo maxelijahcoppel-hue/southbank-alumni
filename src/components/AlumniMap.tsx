@@ -40,7 +40,6 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const globeInstanceRef = useRef<any>(null);
   const [globeReady, setGlobeReady] = useState(false);
-  const [introVisible, setIntroVisible] = useState(true);
 
   const filteredAlumni = useMemo(() => {
     return alumni.filter((a) => {
@@ -63,14 +62,6 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
     const universities = new Set(filteredAlumni.map((a) => a.university));
     return { total: filteredAlumni.length, countries: countries.size, universities: universities.size };
   }, [filteredAlumni]);
-
-  // Fade out intro text after globe loads
-  useEffect(() => {
-    if (globeReady) {
-      const timer = setTimeout(() => setIntroVisible(false), 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [globeReady]);
 
   // Initialize globe
   useEffect(() => {
@@ -210,24 +201,28 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         </div>
       )}
 
-      {/* Intro text — fades out after 4 seconds */}
-      {introVisible && globeReady && (
-        <div
-          className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none transition-opacity duration-1000"
-          style={{ opacity: introVisible ? 1 : 0 }}
-        >
+      {/* Hero banner — always visible */}
+      {globeReady && (
+        <div className="absolute top-24 left-0 right-0 z-20 pointer-events-none flex flex-col items-center px-4">
           <h1
-            className="text-white/90 text-4xl md:text-5xl font-bold tracking-tight text-center mb-3"
-            style={{ animation: "fade-in 1s ease forwards" }}
+            className="text-white text-3xl md:text-5xl font-bold tracking-tight text-center mb-2 drop-shadow-lg"
+            style={{ animation: "fade-in 0.8s ease forwards" }}
           >
-            From Westminster to the world
+            Our alumni, around the world
           </h1>
           <p
-            className="text-white/40 text-base md:text-lg text-center"
-            style={{ animation: "fade-in 1.5s ease forwards" }}
+            className="text-white/50 text-sm md:text-base text-center max-w-md mb-5"
+            style={{ animation: "fade-in 1.2s ease forwards" }}
           >
-            Explore where Southbank alumni are making their mark
+            See where Southbank students end up. Click a pin to explore their story.
           </p>
+          <a
+            href="/directory"
+            className="pointer-events-auto text-sm font-medium px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-white/80 hover:bg-white/20 hover:text-white transition-all"
+            style={{ animation: "fade-in 1.6s ease forwards" }}
+          >
+            Browse the full directory →
+          </a>
         </div>
       )}
 
