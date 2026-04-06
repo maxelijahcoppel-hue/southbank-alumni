@@ -100,28 +100,41 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .objectThreeObject(() => {
           const group = new THREE.Group();
 
-          // Needle — thick white cone
-          const needleGeo = new THREE.ConeGeometry(0.3, 4, 8);
-          const needleMat = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 90 });
+          // Needle — silver metallic, tapers to a point
+          const needleGeo = new THREE.ConeGeometry(0.25, 4.5, 12);
+          const needleMat = new THREE.MeshPhongMaterial({
+            color: 0xc0c0c0,
+            specular: 0xffffff,
+            shininess: 200,
+          });
           const needle = new THREE.Mesh(needleGeo, needleMat);
-          needle.position.y = 2;
+          needle.position.y = 2.25;
           group.add(needle);
 
-          // Pin head — large gold sphere
-          const headGeo = new THREE.SphereGeometry(1.4, 16, 12);
-          const headMat = new THREE.MeshPhongMaterial({ color: 0xd4a843, shininess: 100 });
+          // Pin head — gold with realistic shading
+          const headGeo = new THREE.SphereGeometry(1.3, 24, 16);
+          const headMat = new THREE.MeshPhongMaterial({
+            color: 0xd4a843,
+            specular: 0xffe8a0,
+            shininess: 60,
+          });
           const head = new THREE.Mesh(headGeo, headMat);
-          head.position.y = 5;
+          head.position.y = 5.2;
           group.add(head);
 
-          // Highlight spot on pin head
-          const hlGeo = new THREE.SphereGeometry(0.45, 8, 8);
-          const hlMat = new THREE.MeshPhongMaterial({ color: 0xffe88a, shininess: 120 });
+          // Specular highlight on pin head
+          const hlGeo = new THREE.SphereGeometry(0.35, 12, 10);
+          const hlMat = new THREE.MeshPhongMaterial({
+            color: 0xfff4cc,
+            specular: 0xffffff,
+            shininess: 200,
+            transparent: true,
+            opacity: 0.5,
+          });
           const hl = new THREE.Mesh(hlGeo, hlMat);
-          hl.position.set(-0.4, 5.8, 0.4);
+          hl.position.set(-0.35, 5.9, 0.35);
           group.add(hl);
 
-          // Bigger overall
           group.scale.set(0.6, 0.6, 0.6);
 
           return group;
