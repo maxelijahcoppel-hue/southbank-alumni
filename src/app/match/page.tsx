@@ -62,9 +62,29 @@ interface MatchResult {
 }
 
 function computeMatch(profile: AlumniProfile, filters: MatchFilters): MatchResult {
+  const reasons: string[] = [];
+
+  // === HARD FILTERS (exclude if not met) ===
+
+  // Mentoring: if toggled, alumni MUST be open to mentoring
+  if (filters.openToMentoring && !profile.open_to_mentoring) {
+    return { profile, score: 0, maxScore: 0, matchPercent: 0, reasons: [] };
+  }
+
+  // Contact: if toggled, alumni MUST be open to contact
+  if (filters.openToContact && !profile.open_to_contact) {
+    return { profile, score: 0, maxScore: 0, matchPercent: 0, reasons: [] };
+  }
+
+  // Gap year: if selected, must match
+  if (filters.tookGapYear !== null && profile.took_gap_year !== filters.tookGapYear) {
+    return { profile, score: 0, maxScore: 0, matchPercent: 0, reasons: [] };
+  }
+
+  // === SCORING CRITERIA ===
+
   let score = 0;
   let maxScore = 0;
-  const reasons: string[] = [];
 
   // Subject matching (weighted highest — 3 points per match)
   if (filters.hlSubjects.length > 0) {
@@ -103,29 +123,10 @@ function computeMatch(profile: AlumniProfile, filters: MatchFilters): MatchResul
     }
   }
 
-  // Mentoring bonus (1 point)
-  if (filters.openToMentoring) {
-    maxScore += 1;
-    if (profile.open_to_mentoring) {
-      score += 1;
-      reasons.push("Open to mentoring");
-    }
-  }
-
-  // Contact bonus (1 point)
-  if (filters.openToContact) {
-    maxScore += 1;
-    if (profile.open_to_contact) {
-      score += 1;
-      reasons.push("Open to contact");
-    }
-  }
-
-  // Gap year filter (pass/fail, not scored)
+  // Add reason tags for passed hard filters
+  if (filters.openToMentoring) reasons.push("Open to mentoring");
+  if (filters.openToContact) reasons.push("Open to contact");
   if (filters.tookGapYear !== null) {
-    if (profile.took_gap_year !== filters.tookGapYear) {
-      return { profile, score: 0, maxScore, matchPercent: 0, reasons: [] };
-    }
     reasons.push(filters.tookGapYear ? "Took a gap year" : "Went straight to university");
   }
 
