@@ -275,7 +275,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
           style={{ opacity: 1, animation: "fade-in 0.5s ease forwards" }}
         >
           <h1 className="text-white text-4xl md:text-6xl font-bold tracking-tight text-center drop-shadow-lg mb-3">
-            From Westminster to the world
+            From Westminster To The World
           </h1>
           <p className="text-white/60 text-base md:text-lg">
             The Southbank Alumni Network
