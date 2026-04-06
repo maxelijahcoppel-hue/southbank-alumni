@@ -86,8 +86,9 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       globe = new Globe(globeRef.current)
         .globeImageUrl("//unpkg.com/three-globe@2.41.12/example/img/earth-blue-marble.jpg")
         .bumpImageUrl("//unpkg.com/three-globe@2.41.12/example/img/earth-topology.png")
-        .atmosphereColor("rgba(100, 180, 255, 0.2)")
-        .atmosphereAltitude(0.2)
+        .backgroundImageUrl("//unpkg.com/three-globe@2.41.12/example/img/night-sky.png")
+        .atmosphereColor("rgba(100, 180, 255, 0.22)")
+        .atmosphereAltitude(0.22)
         .pointOfView({ lat: LONDON.lat, lng: LONDON.lng, altitude: 2.5 }, 0)
         .width(globeRef.current.clientWidth)
         .height(globeRef.current.clientHeight)
@@ -143,9 +144,9 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .arcDashAnimateTime(2500)
         .arcStroke(0.3);
 
-      // Light blue gradient background
+      // Use the night sky background image for a vibrant space feel
       const renderer = globe.renderer();
-      renderer.setClearColor(0x0a1628, 1);
+      renderer.setClearColor(0x000000, 1);
 
       // Vivid but realistic
       const scene = globe.scene();
@@ -205,16 +206,15 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       {/* Globe */}
       <div ref={globeRef} className="absolute inset-0" />
 
-      {/* Light blue gradient overlays */}
+      {/* Colorful nebula-style tints over the starfield */}
       <div
         className="absolute inset-0 pointer-events-none z-[1]"
         style={{
           background: `
-            radial-gradient(ellipse 100% 70% at 50% 50%, transparent 20%, rgba(10,22,40,0.3) 50%, rgba(10,22,40,0.85) 100%),
-            radial-gradient(ellipse 90% 70% at 50% 100%, rgba(30,80,140,0.15) 0%, transparent 60%),
-            radial-gradient(ellipse 80% 60% at 15% 80%, rgba(40,100,180,0.1) 0%, transparent 55%),
-            radial-gradient(ellipse 70% 50% at 85% 75%, rgba(50,120,200,0.08) 0%, transparent 50%),
-            radial-gradient(ellipse 120% 40% at 50% 0%, rgba(20,60,120,0.12) 0%, transparent 50%)
+            radial-gradient(ellipse 70% 50% at 10% 90%, rgba(60,40,140,0.15) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 40% at 90% 85%, rgba(40,100,160,0.12) 0%, transparent 55%),
+            radial-gradient(ellipse 80% 50% at 80% 10%, rgba(100,50,120,0.08) 0%, transparent 50%),
+            radial-gradient(ellipse 50% 40% at 20% 15%, rgba(40,80,140,0.1) 0%, transparent 50%)
           `,
         }}
       />
