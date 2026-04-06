@@ -234,36 +234,45 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       />
 
       {/* Stats */}
-      <div className="absolute bottom-10 left-6 z-10 hidden md:flex items-end gap-8">
+      <div className="absolute bottom-10 left-8 z-10 hidden md:flex items-end gap-10">
         <div>
-          <p className="font-mono text-4xl font-bold text-white tracking-tight">{stats.total}</p>
-          <p className="text-[11px] text-white/35 uppercase tracking-[0.2em] mt-1">Alumni</p>
+          <p className="font-mono text-5xl font-bold text-white tracking-tight">{stats.total}</p>
+          <p className="text-xs text-white/40 uppercase tracking-[0.2em] mt-1.5">Alumni</p>
         </div>
         <div>
-          <p className="font-mono text-4xl font-bold text-white tracking-tight">{stats.countries}</p>
-          <p className="text-[11px] text-white/35 uppercase tracking-[0.2em] mt-1">Countries</p>
+          <p className="font-mono text-5xl font-bold text-white tracking-tight">{stats.countries}</p>
+          <p className="text-xs text-white/40 uppercase tracking-[0.2em] mt-1.5">Countries</p>
         </div>
         <div>
-          <p className="font-mono text-4xl font-bold text-white tracking-tight">{stats.universities}</p>
-          <p className="text-[11px] text-white/35 uppercase tracking-[0.2em] mt-1">Universities</p>
+          <p className="font-mono text-5xl font-bold text-white tracking-tight">{stats.universities}</p>
+          <p className="text-xs text-white/40 uppercase tracking-[0.2em] mt-1.5">Universities</p>
         </div>
       </div>
 
       {/* Mobile stats */}
-      <div className="md:hidden absolute bottom-8 left-0 right-0 z-10 flex justify-center gap-6">
+      <div className="md:hidden absolute bottom-8 left-0 right-0 z-10 flex justify-center gap-8">
         <div className="text-center">
-          <p className="font-mono text-2xl font-bold text-white">{stats.total}</p>
-          <p className="text-[10px] text-white/35 uppercase tracking-widest">Alumni</p>
+          <p className="font-mono text-3xl font-bold text-white">{stats.total}</p>
+          <p className="text-[10px] text-white/40 uppercase tracking-widest">Alumni</p>
         </div>
         <div className="text-center">
-          <p className="font-mono text-2xl font-bold text-white">{stats.countries}</p>
-          <p className="text-[10px] text-white/35 uppercase tracking-widest">Countries</p>
+          <p className="font-mono text-3xl font-bold text-white">{stats.countries}</p>
+          <p className="text-[10px] text-white/40 uppercase tracking-widest">Countries</p>
         </div>
         <div className="text-center">
-          <p className="font-mono text-2xl font-bold text-white">{stats.universities}</p>
-          <p className="text-[10px] text-white/35 uppercase tracking-widest">Universities</p>
+          <p className="font-mono text-3xl font-bold text-white">{stats.universities}</p>
+          <p className="text-[10px] text-white/40 uppercase tracking-widest">Universities</p>
         </div>
       </div>
+
+      {/* Interaction hint — bottom right */}
+      {globeReady && !selectedAlumni && (
+        <div className="absolute bottom-10 right-8 z-10 hidden md:block">
+          <p className="text-white/25 text-xs tracking-wide">
+            Drag to rotate · Scroll to zoom · Click a pin to explore
+          </p>
+        </div>
+      )}
 
       {/* Empty state */}
       {filteredAlumni.length === 0 && globeReady && (

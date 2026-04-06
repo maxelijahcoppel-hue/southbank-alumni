@@ -30,29 +30,29 @@ export function Navigation() {
           : "bg-white/95 backdrop-blur-md border-b border-gray-100"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-20">
         <Link
           href="/"
-          className={`text-[15px] font-semibold tracking-tight ${
-            isMapPage ? "text-white/90" : "text-gray-900"
+          className={`text-lg font-bold tracking-tight ${
+            isMapPage ? "text-white" : "text-gray-900"
           }`}
         >
           Southbank <span className="text-[#d4a843]">Alumni</span>
         </Link>
 
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex items-center gap-1.5">
           {links.map((link) => {
             const active = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   isMapPage
                     ? active
-                      ? "text-white bg-white/10"
-                      : "text-white/50 hover:text-white/80 hover:bg-white/5"
+                      ? "text-white bg-white/15"
+                      : "text-white/60 hover:text-white hover:bg-white/8"
                     : active
                       ? "text-gray-900 bg-gray-100"
                       : "text-gray-400 hover:text-gray-700 hover:bg-gray-50"
@@ -64,10 +64,10 @@ export function Navigation() {
           })}
           <Link
             href="/submit"
-            className={`ml-3 px-4 py-1.5 rounded-lg text-[13px] font-medium transition-all ${
+            className={`ml-4 px-5 py-2 rounded-lg text-sm font-semibold transition-all ${
               isMapPage
-                ? "text-white/70 border border-white/15 hover:text-white hover:border-white/30"
-                : "text-gray-500 border border-gray-200 hover:text-gray-700 hover:border-gray-300"
+                ? "bg-[#d4a843]/15 text-[#d4a843] border border-[#d4a843]/25 hover:bg-[#d4a843]/25"
+                : "bg-[#d4a843]/10 text-[#b8922e] border border-[#d4a843]/20 hover:bg-[#d4a843]/20"
             }`}
           >
             Submit Profile
@@ -80,9 +80,9 @@ export function Navigation() {
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? (
-            <X className={isMapPage ? "text-white/70" : "text-gray-500"} size={20} />
+            <X className={isMapPage ? "text-white/70" : "text-gray-500"} size={22} />
           ) : (
-            <Menu className={isMapPage ? "text-white/70" : "text-gray-500"} size={20} />
+            <Menu className={isMapPage ? "text-white/70" : "text-gray-500"} size={22} />
           )}
         </button>
       </div>
@@ -104,7 +104,7 @@ export function Navigation() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  className={`block px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
                     isMapPage
                       ? active
                         ? "text-white bg-white/10"
@@ -121,11 +121,7 @@ export function Navigation() {
             <Link
               href="/submit"
               onClick={() => setMobileOpen(false)}
-              className={`block mt-1 px-3 py-2.5 rounded-lg text-sm font-medium ${
-                isMapPage
-                  ? "text-[#d4a843]"
-                  : "text-[#d4a843]"
-              }`}
+              className="block mt-2 px-4 py-3 rounded-lg text-[15px] font-semibold text-[#d4a843]"
             >
               Submit Profile
             </Link>
