@@ -18,9 +18,9 @@ export const metadata = {
 };
 
 const stats = [
-  { label: "Alumni", value: "127", icon: Users },
-  { label: "Countries", value: "34", icon: Globe },
-  { label: "Universities", value: "52", icon: GraduationCap },
+  { label: "Alumni", value: "15", icon: Users },
+  { label: "Countries", value: "14", icon: Globe },
+  { label: "Universities", value: "15", icon: GraduationCap },
 ];
 
 const steps = [
