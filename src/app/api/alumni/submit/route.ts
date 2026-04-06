@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { getCityCoordinates } from "@/lib/cities";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -48,12 +49,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: errors.join(" ") }, { status: 400 });
     }
 
+    const coords = getCityCoordinates(location_city.trim(), location_country.trim());
+
     const { data, error } = await supabase.from("alumni_profiles").insert({
       full_name: full_name.trim(),
       undergraduate_degree: undergraduate_degree.trim(),
       university: university.trim(),
       location_city: location_city.trim(),
       location_country: location_country.trim(),
+      latitude: coords?.lat ?? null,
+      longitude: coords?.lng ?? null,
       hl_subjects,
       hl_teachers: Array.isArray(hl_teachers) ? hl_teachers : [],
       current_profession: current_profession.trim(),
