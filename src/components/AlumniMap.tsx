@@ -100,29 +100,29 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .objectThreeObject(() => {
           const group = new THREE.Group();
 
-          // Needle — thin cone from surface pointing up
-          const needleGeo = new THREE.ConeGeometry(0.12, 3, 8);
-          const needleMat = new THREE.MeshPhongMaterial({ color: 0x888888, shininess: 80 });
+          // Needle — thick white cone
+          const needleGeo = new THREE.ConeGeometry(0.3, 4, 8);
+          const needleMat = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 90 });
           const needle = new THREE.Mesh(needleGeo, needleMat);
-          needle.position.y = 1.5;
+          needle.position.y = 2;
           group.add(needle);
 
-          // Pin head — sphere sitting on top of needle
-          const headGeo = new THREE.SphereGeometry(0.9, 16, 12);
+          // Pin head — large gold sphere
+          const headGeo = new THREE.SphereGeometry(1.4, 16, 12);
           const headMat = new THREE.MeshPhongMaterial({ color: 0xd4a843, shininess: 100 });
           const head = new THREE.Mesh(headGeo, headMat);
-          head.position.y = 3.5;
+          head.position.y = 5;
           group.add(head);
 
           // Highlight spot on pin head
-          const hlGeo = new THREE.SphereGeometry(0.3, 8, 8);
+          const hlGeo = new THREE.SphereGeometry(0.45, 8, 8);
           const hlMat = new THREE.MeshPhongMaterial({ color: 0xffe88a, shininess: 120 });
           const hl = new THREE.Mesh(hlGeo, hlMat);
-          hl.position.set(-0.3, 4.0, 0.3);
+          hl.position.set(-0.4, 5.8, 0.4);
           group.add(hl);
 
-          // Scale down to fit globe
-          group.scale.set(0.4, 0.4, 0.4);
+          // Bigger overall
+          group.scale.set(0.6, 0.6, 0.6);
 
           return group;
         })
