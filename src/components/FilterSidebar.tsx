@@ -77,7 +77,7 @@ export function FilterSidebar({
       {/* Toggle button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-20 left-4 md:left-6 z-30 flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/[0.12] text-white/80 hover:bg-white/15 hover:text-white transition-all text-sm font-medium shadow-lg"
+        className="fixed top-44 md:top-20 left-4 md:left-6 z-30 flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/[0.12] text-white/80 hover:bg-white/15 hover:text-white transition-all text-sm font-medium shadow-lg"
       >
         <SlidersHorizontal className="w-4 h-4" />
         <span>Filters</span>
