@@ -1,54 +1,52 @@
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-import { createClient } from "@supabase/supabase-js";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import { AdminDashboard } from "./admin-dashboard";
+import type { AlumniProfile, ProjectPost } from "@/lib/types";
 
-async function getSession() {
-  const cookieStore = await cookies();
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+export default function AdminPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [profiles, setProfiles] = useState<AlumniProfile[]>([]);
+  const [projects, setProjects] = useState<ProjectPost[]>([]);
 
-  const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-    global: {
-      headers: {
-        cookie: cookieStore.toString(),
-      },
-    },
-  });
+  useEffect(() => {
+    async function checkAuthAndFetch() {
+      const { data: { session } } = await supabase.auth.getSession();
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  return session;
-}
+      if (!session) {
+        router.push("/admin/login");
+        return;
+      }
 
-export default async function AdminPage() {
-  const session = await getSession();
+      setAuthenticated(true);
 
-  if (!session) {
-    redirect("/admin/login");
+      // Fetch data using API routes (which use the service role key server-side)
+      const [profilesRes, projectsRes] = await Promise.all([
+        fetch("/api/admin/profiles"),
+        fetch("/api/admin/projects"),
+      ]);
+
+      if (profilesRes.ok) setProfiles(await profilesRes.json());
+      if (projectsRes.ok) setProjects(await projectsRes.json());
+      setLoading(false);
+    }
+
+    checkAuthAndFetch();
+  }, [router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
+        <p className="text-gray-400 text-sm">Loading admin panel...</p>
+      </div>
+    );
   }
 
-  // Fetch pending profiles and projects using the admin client
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-  const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+  if (!authenticated) return null;
 
-  const [profilesRes, projectsRes] = await Promise.all([
-    supabaseAdmin
-      .from("alumni_profiles")
-      .select("*")
-      .order("created_at", { ascending: false }),
-    supabaseAdmin
-      .from("project_posts")
-      .select("*")
-      .order("created_at", { ascending: false }),
-  ]);
-
-  return (
-    <AdminDashboard
-      profiles={profilesRes.data || []}
-      projects={projectsRes.data || []}
-    />
-  );
+  return <AdminDashboard profiles={profiles} projects={projects} />;
 }
