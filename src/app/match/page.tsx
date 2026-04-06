@@ -176,7 +176,35 @@ export default function MatchPage() {
 
   const matches = useMemo(() => {
     if (!hasAnyFilter) return [];
-    return alumni
+
+    // First apply hard filters (mentoring, contact, gap year)
+    let filtered = alumni.filter((a) => {
+      if (filters.openToMentoring && !a.open_to_mentoring) return false;
+      if (filters.openToContact && !a.open_to_contact) return false;
+      if (filters.tookGapYear !== null && a.took_gap_year !== filters.tookGapYear) return false;
+      return true;
+    });
+
+    // If no scoring criteria selected, just show the filtered list
+    const hasScoringCriteria =
+      filters.hlSubjects.length > 0 ||
+      filters.universityInterest !== "" ||
+      filters.careerInterest !== "" ||
+      filters.countryInterest !== "";
+
+    if (!hasScoringCriteria) {
+      // Only hard filters active — show everyone who passed, sorted by name
+      return filtered.map((profile) => ({
+        profile,
+        score: 1,
+        maxScore: 1,
+        matchPercent: 100,
+        reasons: computeMatch(profile, filters).reasons,
+      }));
+    }
+
+    // Score the filtered alumni and only show those with matches
+    return filtered
       .map((profile) => computeMatch(profile, filters))
       .filter((m) => m.score > 0)
       .sort((a, b) => b.score - a.score || b.matchPercent - a.matchPercent);
