@@ -23,14 +23,22 @@ export interface Filters {
   hlSubjects: string[];
   universitySearch: string;
   careerSearch: string;
+  countrySearch: string;
   yearRange: [number, number];
+  gapYearOnly: boolean;
+  openToContact: boolean;
+  openToMentoring: boolean;
 }
 
 const defaultFilters: Filters = {
   hlSubjects: [],
   universitySearch: "",
   careerSearch: "",
+  countrySearch: "",
   yearRange: [2010, 2026],
+  gapYearOnly: false,
+  openToContact: false,
+  openToMentoring: false,
 };
 
 export function AlumniMap({ alumni }: AlumniMapProps) {
@@ -55,10 +63,18 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         !a.current_profession.toLowerCase().includes(filters.careerSearch.toLowerCase())
       )
         return false;
+      if (
+        filters.countrySearch &&
+        !a.location_country.toLowerCase().includes(filters.countrySearch.toLowerCase())
+      )
+        return false;
       if (a.graduation_year !== null) {
         if (a.graduation_year < filters.yearRange[0] || a.graduation_year > filters.yearRange[1])
           return false;
       }
+      if (filters.gapYearOnly && !a.took_gap_year) return false;
+      if (filters.openToContact && !a.open_to_contact) return false;
+      if (filters.openToMentoring && !a.open_to_mentoring) return false;
       return true;
     });
   }, [alumni, filters]);
@@ -151,6 +167,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         filters={filters}
         onFiltersChange={setFilters}
         onClear={() => setFilters(defaultFilters)}
+        alumni={alumni}
       />
 
       {/* Stats - bottom left */}
