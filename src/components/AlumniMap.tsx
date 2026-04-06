@@ -173,6 +173,23 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
             </div>
           `;
         })
+        // Continent labels
+        .labelsData([
+          { lat: 50, lng: 10, text: "EUROPE", size: 0.7 },
+          { lat: 40, lng: -100, text: "NORTH AMERICA", size: 0.8 },
+          { lat: -15, lng: -60, text: "SOUTH AMERICA", size: 0.7 },
+          { lat: 5, lng: 25, text: "AFRICA", size: 0.8 },
+          { lat: 35, lng: 80, text: "ASIA", size: 0.9 },
+          { lat: -25, lng: 135, text: "AUSTRALIA", size: 0.6 },
+        ])
+        .labelLat((d: unknown) => (d as { lat: number }).lat)
+        .labelLng((d: unknown) => (d as { lng: number }).lng)
+        .labelText((d: unknown) => (d as { text: string }).text)
+        .labelSize((d: unknown) => (d as { size: number }).size)
+        .labelColor(() => "rgba(255, 255, 255, 0.15)")
+        .labelDotRadius(0)
+        .labelAltitude(0.01)
+        .labelResolution(3)
         // Arcs from London
         .arcsData([])
         .arcStartLat(() => LONDON.lat)
