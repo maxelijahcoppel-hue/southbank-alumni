@@ -29,6 +29,74 @@ const defaultFilters: Filters = {
 
 const LONDON = { lat: 51.5074, lng: -0.1278 };
 
+function SpotlightCard({
+  alumni,
+  onSelect,
+}: {
+  alumni: AlumniProfile[];
+  onSelect: (a: AlumniProfile) => void;
+}) {
+  const [index, setIndex] = useState(() =>
+    Math.floor(Math.random() * alumni.length)
+  );
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    if (alumni.length <= 1) return;
+    const interval = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setIndex((prev) => {
+          let next = prev;
+          while (next === prev) {
+            next = Math.floor(Math.random() * alumni.length);
+          }
+          return next;
+        });
+        setVisible(true);
+      }, 300);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [alumni.length]);
+
+  const current = alumni[index % alumni.length];
+  if (!current) return null;
+
+  const truncatedAdvice =
+    current.advice_to_students.length > 80
+      ? current.advice_to_students.slice(0, 80).trimEnd() + "..."
+      : current.advice_to_students;
+
+  return (
+    <div className="mb-2">
+      <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1.5 text-right">
+        Alumni Spotlight
+      </p>
+      <button
+        onClick={() => onSelect(current)}
+        className={`text-left w-[280px] rounded-xl bg-white/10 backdrop-blur-md border border-white/10 p-4 cursor-pointer hover:bg-white/[0.14] transition-all duration-300 ${
+          visible ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <p className="text-sm font-semibold text-white truncate">
+          {current.full_name}
+        </p>
+        <p className="text-xs text-white/50 mt-0.5 truncate">
+          {current.university}
+        </p>
+        <p className="text-xs text-accent-gold mt-0.5 truncate">
+          {current.current_profession}
+        </p>
+        {current.advice_to_students && (
+          <p className="text-xs text-white/40 mt-2 italic leading-relaxed">
+            &ldquo;{truncatedAdvice}&rdquo;
+          </p>
+        )}
+      </button>
+    </div>
+  );
+}
+
 interface AlumniMapProps {
   alumni: AlumniProfile[];
 }
@@ -344,9 +412,24 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         </div>
       </div>
 
-      {/* CTA + hint — bottom right */}
+      {/* Alumni Spotlight + CTA — bottom right */}
       {globeReady && !selectedAlumni && (
         <div className="absolute bottom-10 right-8 z-10 hidden md:flex flex-col items-end gap-3">
+          {/* Spotlight Card */}
+          {filteredAlumni.length > 0 && (
+            <SpotlightCard
+              alumni={filteredAlumni}
+              onSelect={(a) => {
+                setSelectedAlumni(a);
+                if (globeInstanceRef.current && a.latitude && a.longitude) {
+                  globeInstanceRef.current.pointOfView(
+                    { lat: a.latitude, lng: a.longitude, altitude: 1.5 },
+                    1000
+                  );
+                }
+              }}
+            />
+          )}
           <a
             href="/directory"
             className="text-sm font-medium px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-white/80 hover:bg-white/20 hover:text-white transition-all"

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { AlumniProfile } from "@/lib/types";
 import {
   X,
@@ -9,7 +10,85 @@ import {
   ExternalLink,
   MessageCircle,
   Users,
+  Copy,
+  Check,
 } from "lucide-react";
+
+function LinkedInMessageButton({ alumni }: { alumni: AlumniProfile }) {
+  const [showPanel, setShowPanel] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const firstName = alumni.full_name.split(" ")[0];
+  const message = `Hi ${firstName}! I'm a current student at Southbank International School. I saw your profile on the Alumni Network and would love to hear about your experience at ${alumni.university} and your career in ${alumni.current_profession}. Would you be open to a quick chat?`;
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(message);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  if (!showPanel) {
+    return (
+      <button
+        onClick={() => setShowPanel(true)}
+        className="flex items-center justify-center gap-2 w-full rounded-lg bg-accent-blue text-white px-5 py-2.5 text-sm font-medium hover:bg-accent-blue/90 transition-colors cursor-pointer"
+      >
+        <MessageCircle className="w-4 h-4" />
+        Message on LinkedIn
+      </button>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="rounded-lg bg-white/[0.04] border border-white/[0.08] p-4">
+        <p className="text-xs font-medium text-text-muted-dark uppercase tracking-wide mb-2">
+          Suggested message
+        </p>
+        <p className="text-sm text-text-primary-dark leading-relaxed">
+          {message}
+        </p>
+      </div>
+      <div className="flex gap-2">
+        <button
+          onClick={handleCopy}
+          className={`flex-1 flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors cursor-pointer ${
+            copied
+              ? "bg-success/20 text-success border border-success/30"
+              : "bg-white/10 text-white border border-white/[0.1] hover:bg-white/15"
+          }`}
+        >
+          {copied ? (
+            <>
+              <Check className="w-4 h-4" />
+              Copied!
+            </>
+          ) : (
+            <>
+              <Copy className="w-4 h-4" />
+              Copy message
+            </>
+          )}
+        </button>
+        <a
+          href={alumni.linkedin_url!}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-accent-blue text-white px-4 py-2.5 text-sm font-medium hover:bg-accent-blue/90 transition-colors"
+        >
+          <ExternalLink className="w-4 h-4" />
+          Open LinkedIn
+        </a>
+      </div>
+      <button
+        onClick={() => setShowPanel(false)}
+        className="w-full text-xs text-white/30 hover:text-white/50 transition-colors cursor-pointer py-1"
+      >
+        Close
+      </button>
+    </div>
+  );
+}
 
 interface AlumniCardProps {
   alumni: AlumniProfile;
@@ -141,17 +220,9 @@ export function AlumniCard({ alumni, onClose }: AlumniCardProps) {
             )}
           </div>
 
-          {/* LinkedIn Button */}
+          {/* LinkedIn Button with Message Template */}
           {alumni.linkedin_url && (
-            <a
-              href={alumni.linkedin_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full rounded-lg bg-accent-blue text-white px-5 py-2.5 text-sm font-medium hover:bg-accent-blue/90 transition-colors"
-            >
-              <ExternalLink className="w-4 h-4" />
-              View LinkedIn Profile
-            </a>
+            <LinkedInMessageButton alumni={alumni} />
           )}
         </div>
       </div>
