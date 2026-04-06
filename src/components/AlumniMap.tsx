@@ -84,11 +84,10 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       if (!globeRef.current) return;
 
       globe = new Globe(globeRef.current)
-        .globeImageUrl("//unpkg.com/three-globe/example/img/earth-night.jpg")
+        .globeImageUrl("//unpkg.com/three-globe/example/img/earth-blue-marble.jpg")
         .bumpImageUrl("//unpkg.com/three-globe/example/img/earth-topology.png")
-        .backgroundImageUrl("//unpkg.com/three-globe/example/img/night-sky.png")
-        .atmosphereColor("rgba(212, 168, 67, 0.12)")
-        .atmosphereAltitude(0.25)
+        .atmosphereColor("rgba(100, 160, 255, 0.15)")
+        .atmosphereAltitude(0.18)
         .pointOfView({ lat: LONDON.lat, lng: LONDON.lng, altitude: 2.5 }, 0)
         .width(globeRef.current.clientWidth)
         .height(globeRef.current.clientHeight)
