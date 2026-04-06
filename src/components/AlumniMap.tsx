@@ -92,45 +92,44 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .pointOfView({ lat: LONDON.lat, lng: LONDON.lng, altitude: 2.5 }, 0)
         .width(globeRef.current.clientWidth)
         .height(globeRef.current.clientHeight)
-        // Pushpin markers anchored to globe surface
-        .htmlElementsData([])
-        .htmlLat((d: unknown) => (d as AlumniProfile).latitude ?? 0)
-        .htmlLng((d: unknown) => (d as AlumniProfile).longitude ?? 0)
-        .htmlAltitude(-0.01)
-        .htmlElement((d: unknown) => {
+        // Pin columns growing from the globe surface
+        .pointsData([])
+        .pointLat((d: unknown) => (d as AlumniProfile).latitude ?? 0)
+        .pointLng((d: unknown) => (d as AlumniProfile).longitude ?? 0)
+        .pointColor(() => "#d4a843")
+        .pointAltitude(0.08)
+        .pointRadius(0.25)
+        .pointsMerge(false)
+        .onPointClick((point: unknown) => {
+          const p = point as AlumniProfile;
+          setSelectedAlumni(p);
+          if (globeInstanceRef.current && p.latitude && p.longitude) {
+            globeInstanceRef.current.pointOfView(
+              { lat: p.latitude, lng: p.longitude, altitude: 1.5 },
+              1000
+            );
+          }
+        })
+        .pointLabel((d: unknown) => {
           const p = d as AlumniProfile;
-          const el = document.createElement("div");
-          el.style.cursor = "pointer";
-          el.style.transition = "transform 0.2s ease";
-          el.style.transform = "translate(-10px, -14px)";
-          el.title = `${p.full_name} · ${p.university}`;
-          // Yellow pushpin SVG
-          el.innerHTML = `<svg width="20" height="28" viewBox="0 0 20 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Pin needle -->
-            <line x1="10" y1="18" x2="10" y2="28" stroke="#888" stroke-width="1.5" stroke-linecap="round"/>
-            <!-- Pin body (barrel) -->
-            <rect x="6" y="6" width="8" height="8" rx="1.5" fill="#d4a843" stroke="#b8922e" stroke-width="0.8"/>
-            <!-- Pin head (top disc) -->
-            <ellipse cx="10" cy="6" rx="6" ry="3" fill="#d4a843" stroke="#b8922e" stroke-width="0.8"/>
-            <!-- Pin head top highlight -->
-            <ellipse cx="10" cy="5" rx="4" ry="1.8" fill="#e8c65a" opacity="0.6"/>
-            <!-- Pin base flare -->
-            <path d="M5 14 Q10 17 15 14 L13 14.5 Q10 16.5 7 14.5 Z" fill="#b8922e" opacity="0.8"/>
-            <!-- Highlight on barrel -->
-            <rect x="7.5" y="7.5" width="2" height="5" rx="0.8" fill="#e8c65a" opacity="0.4"/>
-          </svg>`;
-          el.addEventListener("mouseenter", () => { el.style.transform = "translate(-10px, -14px) scale(1.3)"; });
-          el.addEventListener("mouseleave", () => { el.style.transform = "translate(-10px, -14px) scale(1)"; });
-          el.addEventListener("click", () => {
-            setSelectedAlumni(p);
-            if (globeInstanceRef.current && p.latitude && p.longitude) {
-              globeInstanceRef.current.pointOfView(
-                { lat: p.latitude, lng: p.longitude, altitude: 1.5 },
-                1000
-              );
-            }
-          });
-          return el;
+          return `
+            <div style="
+              background: rgba(15,29,50,0.95);
+              backdrop-filter: blur(12px);
+              border: 1px solid rgba(255,255,255,0.08);
+              border-radius: 12px;
+              padding: 12px 16px;
+              color: white;
+              font-family: system-ui, sans-serif;
+              min-width: 180px;
+              pointer-events: none;
+            ">
+              <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">${p.full_name}</div>
+              <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 2px;">${p.university}</div>
+              <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 6px;">${p.current_profession}</div>
+              <div style="font-size: 11px; color: #d4a843;">Click to view profile</div>
+            </div>
+          `;
         })
         // Arcs from London
         .arcsData([])
@@ -198,7 +197,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   useEffect(() => {
     if (!globeInstanceRef.current || !globeReady) return;
     const validAlumni = filteredAlumni.filter((a) => a.latitude !== null && a.longitude !== null);
-    globeInstanceRef.current.htmlElementsData(validAlumni).arcsData(validAlumni);
+    globeInstanceRef.current.pointsData(validAlumni).arcsData(validAlumni);
   }, [filteredAlumni, globeReady]);
 
   return (
