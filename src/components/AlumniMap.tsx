@@ -84,10 +84,10 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       if (!globeRef.current) return;
 
       globe = new Globe(globeRef.current)
-        .globeImageUrl("//unpkg.com/three-globe/example/img/earth-day.jpg")
-        .bumpImageUrl("//unpkg.com/three-globe/example/img/earth-topology.png")
-        .atmosphereColor("rgba(80, 200, 255, 0.25)")
-        .atmosphereAltitude(0.25)
+        .globeImageUrl("//unpkg.com/three-globe@2.41.12/example/img/earth-blue-marble.jpg")
+        .bumpImageUrl("//unpkg.com/three-globe@2.41.12/example/img/earth-topology.png")
+        .atmosphereColor("rgba(100, 180, 255, 0.2)")
+        .atmosphereAltitude(0.2)
         .pointOfView({ lat: LONDON.lat, lng: LONDON.lng, altitude: 2.5 }, 0)
         .width(globeRef.current.clientWidth)
         .height(globeRef.current.clientHeight)
@@ -147,18 +147,21 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       const renderer = globe.renderer();
       renderer.setClearColor(0x041510, 1);
 
-      // Make globe vivid — crank up all lights
+      // Bright but not washed out
       const scene = globe.scene();
       scene.children.forEach((child: { type?: string; intensity?: number; color?: { set?: (c: string) => void } }) => {
         if (child.type === "AmbientLight") {
-          child.intensity = 2.5;
+          child.intensity = 1.4;
         }
         if (child.type === "DirectionalLight") {
-          child.intensity = 2.0;
-          // Warm white light to bring out the Earth's colors
-          child.color?.set?.("#fff5e6");
+          child.intensity = 1.2;
+          child.color?.set?.("#ffffff");
         }
       });
+
+      // Sharper rendering
+      const rendererEl = renderer.domElement;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
       // Controls
       const controls = globe.controls();
