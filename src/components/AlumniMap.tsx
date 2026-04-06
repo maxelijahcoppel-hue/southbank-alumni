@@ -79,7 +79,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let globe: any = null;
 
-    import("globe.gl").then((GlobeModule) => {
+    Promise.all([import("globe.gl"), import("three")]).then(([GlobeModule, THREE]) => {
       const Globe = GlobeModule.default;
       if (!globeRef.current) return;
 
@@ -94,9 +94,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .height(globeRef.current.clientHeight)
         // Custom 3D pushpin markers using Three.js geometry
         .customLayerData([])
-        .customThreeObject((d: unknown) => {
-          const THREE = (globe as any).__THREE || (window as any).THREE;
-          if (!THREE) return new Object();
+        .customThreeObject(() => {
 
           const group = new THREE.Group();
           const pinColor = 0xd4a843;
@@ -178,9 +176,6 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       // Use the night sky background image for a vibrant space feel
       const renderer = globe.renderer();
       renderer.setClearColor(0x000000, 1);
-
-      // Store THREE reference for custom objects
-      import("three").then((THREE) => { (globe as any).__THREE = THREE; });
 
       // Vivid but realistic
       const scene = globe.scene();
