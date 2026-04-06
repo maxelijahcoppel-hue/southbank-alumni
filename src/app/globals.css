@@ -1,26 +1,91 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-navy-50: #f0f4f8;
+  --color-navy-100: #d9e2ec;
+  --color-navy-200: #bcccdc;
+  --color-navy-300: #9fb3c8;
+  --color-navy-400: #829ab1;
+  --color-navy-500: #627d98;
+  --color-navy-600: #486581;
+  --color-navy-700: #334e68;
+  --color-navy-800: #243b53;
+  --color-navy-900: #102a43;
+  --color-navy-950: #0a1929;
+  --color-accent: #3b82f6;
+  --color-accent-light: #60a5fa;
+  --color-bg-dark: #0a1628;
+  --color-bg-light: #fafafa;
+  --color-bg-card: #ffffff;
+  --color-bg-card-dark: rgba(255, 255, 255, 0.05);
+  --color-text-primary: #1a1a1a;
+  --color-text-primary-dark: #e8e8e8;
+  --color-text-muted: #6b7280;
+  --color-text-muted-dark: rgba(255, 255, 255, 0.5);
+  --color-accent-gold: #d4a843;
+  --color-accent-blue: #4a90d9;
+  --color-success: #4ad99a;
+  --color-error: #ef4444;
+  --color-border: #e5e7eb;
+  --color-border-dark: rgba(255, 255, 255, 0.08);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+body {
+  background: #f8fafc;
+  color: #1e293b;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Alumni card slide-in animation */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes slide-in-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in-up 300ms ease-out;
+}
+
+@media (min-width: 768px) {
+  .animate-slide-in {
+    animation: slide-in-right 300ms ease-out;
+  }
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
 }
