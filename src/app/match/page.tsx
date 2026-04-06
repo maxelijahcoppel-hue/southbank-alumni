@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 import { sampleAlumni } from "@/lib/sample-data";
 import {
   ExternalLink,
@@ -135,9 +136,18 @@ function computeMatch(profile: AlumniProfile, filters: MatchFilters): MatchResul
 export default function MatchPage() {
   const [filters, setFilters] = useState<MatchFilters>(defaultFilters);
   const [expandedProfile, setExpandedProfile] = useState<string | null>(null);
+  const [alumni, setAlumni] = useState<AlumniProfile[]>(sampleAlumni as AlumniProfile[]);
 
-  // Use sample data (replace with Supabase fetch when connected)
-  const alumni = sampleAlumni as AlumniProfile[];
+  useEffect(() => {
+    async function fetchAlumni() {
+      const { data } = await supabase
+        .from("alumni_profiles")
+        .select("*")
+        .eq("status", "approved");
+      if (data && data.length > 0) setAlumni(data);
+    }
+    fetchAlumni();
+  }, []);
 
   const hasAnyFilter =
     filters.hlSubjects.length > 0 ||
