@@ -1,13 +1,20 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
-import Map, { Marker, NavigationControl, type MapEvent } from "react-map-gl/mapbox";
-import "mapbox-gl/dist/mapbox-gl.css";
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  Marker,
+  ZoomableGroup,
+} from "react-simple-maps";
 import { AlumniProfile } from "@/lib/types";
 import { AlumniCard } from "./AlumniCard";
 import { FilterSidebar } from "./FilterSidebar";
 import { TimelineSlider } from "./TimelineSlider";
-import { MapPin, Users, Globe, GraduationCap } from "lucide-react";
+import { Users, Globe, GraduationCap } from "lucide-react";
+
+const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 interface AlumniMapProps {
   alumni: AlumniProfile[];
@@ -28,15 +35,9 @@ const defaultFilters: Filters = {
 };
 
 export function AlumniMap({ alumni }: AlumniMapProps) {
-  const [selectedAlumni, setSelectedAlumni] = useState<AlumniProfile | null>(
-    null
-  );
+  const [selectedAlumni, setSelectedAlumni] = useState<AlumniProfile | null>(null);
   const [filters, setFilters] = useState<Filters>(defaultFilters);
-  const [viewState, setViewState] = useState({
-    longitude: 10,
-    latitude: 20,
-    zoom: 1.8,
-  });
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const filteredAlumni = useMemo(() => {
     return alumni.filter((a) => {
@@ -48,25 +49,18 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       }
       if (
         filters.universitySearch &&
-        !a.university
-          .toLowerCase()
-          .includes(filters.universitySearch.toLowerCase())
+        !a.university.toLowerCase().includes(filters.universitySearch.toLowerCase())
       ) {
         return false;
       }
       if (
         filters.careerSearch &&
-        !a.current_profession
-          .toLowerCase()
-          .includes(filters.careerSearch.toLowerCase())
+        !a.current_profession.toLowerCase().includes(filters.careerSearch.toLowerCase())
       ) {
         return false;
       }
       if (a.graduation_year !== null) {
-        if (
-          a.graduation_year < filters.yearRange[0] ||
-          a.graduation_year > filters.yearRange[1]
-        ) {
+        if (a.graduation_year < filters.yearRange[0] || a.graduation_year > filters.yearRange[1]) {
           return false;
         }
       }
@@ -89,41 +83,64 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-bg-dark">
-      <Map
-        {...viewState}
-        onMove={(evt) => setViewState(evt.viewState)}
-        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-        mapStyle="mapbox://styles/mapbox/dark-v11"
+    <div className="relative w-full h-screen overflow-hidden bg-[#0a1628]">
+      {/* Map */}
+      <ComposableMap
+        projection="geoMercator"
+        projectionConfig={{
+          scale: 130,
+          center: [10, 20],
+        }}
         style={{ width: "100%", height: "100%" }}
-        attributionControl={false}
       >
-        <NavigationControl position="top-right" />
-
-        {filteredAlumni.map(
-          (alumnus) =>
-            alumnus.latitude !== null &&
-            alumnus.longitude !== null && (
-              <Marker
-                key={alumnus.id}
-                latitude={alumnus.latitude}
-                longitude={alumnus.longitude}
-                anchor="center"
-                onClick={(e) => {
-                  e.originalEvent.stopPropagation();
-                  handleMarkerClick(alumnus);
-                }}
-              >
-                <div
-                  className="w-2.5 h-2.5 rounded-full bg-accent-gold cursor-pointer transition-transform duration-200 hover:scale-150"
+        <ZoomableGroup>
+          <Geographies geography={GEO_URL}>
+            {({ geographies }) =>
+              geographies.map((geo) => (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  fill="rgba(255,255,255,0.04)"
+                  stroke="rgba(255,255,255,0.12)"
+                  strokeWidth={0.5}
                   style={{
-                    boxShadow: "0 0 12px rgba(212, 168, 67, 0.5)",
+                    default: { outline: "none" },
+                    hover: { fill: "rgba(255,255,255,0.08)", outline: "none" },
+                    pressed: { outline: "none" },
                   }}
                 />
-              </Marker>
-            )
-        )}
-      </Map>
+              ))
+            }
+          </Geographies>
+
+          {filteredAlumni.map(
+            (alumnus) =>
+              alumnus.latitude !== null &&
+              alumnus.longitude !== null && (
+                <Marker
+                  key={alumnus.id}
+                  coordinates={[alumnus.longitude, alumnus.latitude]}
+                >
+                  <circle
+                    r={hoveredId === alumnus.id ? 6 : 4}
+                    fill="#d4a843"
+                    stroke="#d4a843"
+                    strokeWidth={0.5}
+                    opacity={0.9}
+                    style={{
+                      cursor: "pointer",
+                      filter: "drop-shadow(0 0 6px rgba(212, 168, 67, 0.6))",
+                      transition: "r 200ms ease",
+                    }}
+                    onClick={() => handleMarkerClick(alumnus)}
+                    onMouseEnter={() => setHoveredId(alumnus.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                  />
+                </Marker>
+              )
+          )}
+        </ZoomableGroup>
+      </ComposableMap>
 
       {/* Filter Sidebar */}
       <FilterSidebar
@@ -133,17 +150,9 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       />
 
       {/* Stats Overlay */}
-      <div className="absolute bottom-8 left-8 z-10 hidden md:flex gap-6">
-        <StatItem
-          icon={<Users className="w-4 h-4" />}
-          value={stats.total}
-          label="Alumni"
-        />
-        <StatItem
-          icon={<Globe className="w-4 h-4" />}
-          value={stats.countries}
-          label="Countries"
-        />
+      <div className="absolute bottom-8 left-8 z-10 hidden md:flex gap-4">
+        <StatItem icon={<Users className="w-4 h-4" />} value={stats.total} label="Alumni" />
+        <StatItem icon={<Globe className="w-4 h-4" />} value={stats.countries} label="Countries" />
         <StatItem
           icon={<GraduationCap className="w-4 h-4" />}
           value={stats.universities}
@@ -157,12 +166,26 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         onChange={(range) => setFilters((f) => ({ ...f, yearRange: range }))}
       />
 
+      {/* Empty State */}
+      {filteredAlumni.length === 0 && (
+        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+          <div className="bg-[#0a1628]/90 backdrop-blur-md rounded-xl px-8 py-6 border border-white/[0.08] text-center pointer-events-auto">
+            <p className="text-white/70 text-sm mb-3">
+              No alumni match these filters. Try broadening your search.
+            </p>
+            <button
+              onClick={() => setFilters(defaultFilters)}
+              className="text-sm font-medium px-4 py-2 rounded-lg bg-[#d4a843] text-[#0a1628] hover:bg-[#d4a843]/90"
+            >
+              Clear filters
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Alumni Card Slide-in */}
       {selectedAlumni && (
-        <AlumniCard
-          alumni={selectedAlumni}
-          onClose={() => setSelectedAlumni(null)}
-        />
+        <AlumniCard alumni={selectedAlumni} onClose={() => setSelectedAlumni(null)} />
       )}
     </div>
   );
@@ -178,12 +201,12 @@ function StatItem({
   label: string;
 }) {
   return (
-    <div className="flex flex-col items-center gap-1 bg-bg-dark/80 backdrop-blur-md rounded-xl px-4 py-3 border border-border-dark">
-      <div className="flex items-center gap-1.5 text-accent-gold">{icon}</div>
-      <span className="font-mono text-2xl font-bold leading-none text-text-primary-dark">
+    <div className="flex flex-col items-center gap-1 bg-[#0a1628]/80 backdrop-blur-md rounded-xl px-4 py-3 border border-white/[0.08]">
+      <div className="flex items-center gap-1.5 text-[#d4a843]">{icon}</div>
+      <span className="font-mono text-2xl font-bold leading-none text-white">
         {value}
       </span>
-      <span className="text-xs text-text-muted-dark">{label}</span>
+      <span className="text-xs text-white/50 uppercase tracking-wider">{label}</span>
     </div>
   );
 }
