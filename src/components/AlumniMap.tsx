@@ -92,16 +92,48 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .pointOfView({ lat: LONDON.lat, lng: LONDON.lng, altitude: 2.5 }, 0)
         .width(globeRef.current.clientWidth)
         .height(globeRef.current.clientHeight)
-        // Pin columns growing from the globe surface
-        .pointsData([])
-        .pointLat((d: unknown) => (d as AlumniProfile).latitude ?? 0)
-        .pointLng((d: unknown) => (d as AlumniProfile).longitude ?? 0)
-        .pointColor(() => "#d4a843")
-        .pointAltitude(0.08)
-        .pointRadius(0.25)
-        .pointsMerge(false)
-        .onPointClick((point: unknown) => {
-          const p = point as AlumniProfile;
+        // Custom 3D pushpin markers using Three.js geometry
+        .customLayerData([])
+        .customThreeObject((d: unknown) => {
+          const THREE = (globe as any).__THREE || (window as any).THREE;
+          if (!THREE) return new Object();
+
+          const group = new THREE.Group();
+          const pinColor = 0xd4a843;
+          const pinMaterial = new THREE.MeshLambertMaterial({ color: pinColor });
+          const highlightMaterial = new THREE.MeshLambertMaterial({ color: 0xe8c65a });
+          const needleMaterial = new THREE.MeshLambertMaterial({ color: 0x999999 });
+
+          // Needle (thin cylinder from surface)
+          const needleGeo = new THREE.CylinderGeometry(0.15, 0.05, 4, 8);
+          const needle = new THREE.Mesh(needleGeo, needleMaterial);
+          needle.position.y = 2;
+          group.add(needle);
+
+          // Pin head (sphere on top)
+          const headGeo = new THREE.SphereGeometry(1.2, 16, 12);
+          const head = new THREE.Mesh(headGeo, pinMaterial);
+          head.position.y = 5;
+          group.add(head);
+
+          // Highlight on pin head
+          const highlightGeo = new THREE.SphereGeometry(0.5, 8, 8);
+          const highlight = new THREE.Mesh(highlightGeo, highlightMaterial);
+          highlight.position.set(-0.4, 5.6, 0.4);
+          group.add(highlight);
+
+          return group;
+        })
+        .customThreeObjectUpdate((obj: any, d: unknown) => {
+          const p = d as AlumniProfile;
+          if (!p.latitude || !p.longitude) return;
+          Object.assign(obj.position, globe.getCoords(p.latitude, p.longitude, 0));
+          // Orient pin to point outward from globe center
+          obj.lookAt(0, 0, 0);
+          obj.rotateX(Math.PI / 2);
+        })
+        .onCustomLayerClick((d: unknown) => {
+          const p = d as AlumniProfile;
           setSelectedAlumni(p);
           if (globeInstanceRef.current && p.latitude && p.longitude) {
             globeInstanceRef.current.pointOfView(
@@ -110,7 +142,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
             );
           }
         })
-        .pointLabel((d: unknown) => {
+        .customLayerLabel((d: unknown) => {
           const p = d as AlumniProfile;
           return `
             <div style="
@@ -146,6 +178,9 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       // Use the night sky background image for a vibrant space feel
       const renderer = globe.renderer();
       renderer.setClearColor(0x000000, 1);
+
+      // Store THREE reference for custom objects
+      import("three").then((THREE) => { (globe as any).__THREE = THREE; });
 
       // Vivid but realistic
       const scene = globe.scene();
@@ -197,7 +232,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   useEffect(() => {
     if (!globeInstanceRef.current || !globeReady) return;
     const validAlumni = filteredAlumni.filter((a) => a.latitude !== null && a.longitude !== null);
-    globeInstanceRef.current.pointsData(validAlumni).arcsData(validAlumni);
+    globeInstanceRef.current.customLayerData(validAlumni).arcsData(validAlumni);
   }, [filteredAlumni, globeReady]);
 
   return (
