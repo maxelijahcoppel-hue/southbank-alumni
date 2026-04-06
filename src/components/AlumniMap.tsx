@@ -96,22 +96,25 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .objectsData([])
         .objectLat((d: unknown) => (d as AlumniProfile).latitude ?? 0)
         .objectLng((d: unknown) => (d as AlumniProfile).longitude ?? 0)
-        .objectAltitude(0)
+        .objectAltitude(0.01)
         .objectThreeObject(() => {
           const group = new THREE.Group();
 
-          // Needle — silver metallic, tapers to a point
+          // Build pin along Z-axis (globe.gl's outward direction)
+
+          // Needle — silver metallic cone pointing along +Z
           const needleGeo = new THREE.ConeGeometry(0.25, 4.5, 12);
+          needleGeo.rotateX(Math.PI / 2); // rotate from Y-up to Z-up
           const needleMat = new THREE.MeshPhongMaterial({
             color: 0xc0c0c0,
             specular: 0xffffff,
             shininess: 200,
           });
           const needle = new THREE.Mesh(needleGeo, needleMat);
-          needle.position.y = 2.25;
+          needle.position.z = 2.25;
           group.add(needle);
 
-          // Pin head — gold with realistic shading
+          // Pin head — gold sphere at tip along +Z
           const headGeo = new THREE.SphereGeometry(1.3, 24, 16);
           const headMat = new THREE.MeshPhongMaterial({
             color: 0xd4a843,
@@ -119,7 +122,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
             shininess: 60,
           });
           const head = new THREE.Mesh(headGeo, headMat);
-          head.position.y = 5.2;
+          head.position.z = 5.2;
           group.add(head);
 
           // Specular highlight on pin head
@@ -132,7 +135,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
             opacity: 0.5,
           });
           const hl = new THREE.Mesh(hlGeo, hlMat);
-          hl.position.set(-0.35, 5.9, 0.35);
+          hl.position.set(-0.35, 0.35, 5.9);
           group.add(hl);
 
           group.scale.set(0.6, 0.6, 0.6);
