@@ -143,9 +143,10 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .arcDashAnimateTime(2500)
         .arcStroke(0.3);
 
-      // Customize renderer — match the page background
+      // Warm gradient background — rendered via CSS, globe bg transparent
       const renderer = globe.renderer();
-      renderer.setClearColor(0x070e1a, 1);
+      renderer.setClearColor(0x000000, 0);
+      renderer.domElement.style.background = "transparent";
 
       // Controls
       const controls = globe.controls();
@@ -185,7 +186,12 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   }, [filteredAlumni, globeReady]);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[#070e1a]">
+    <div
+      className="relative w-full h-screen overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, #0f1b2e 0%, #1a2744 25%, #1e3a5f 50%, #2a4a6b 70%, #1a3352 100%)",
+      }}
+    >
       {/* Globe */}
       <div ref={globeRef} className="absolute inset-0" />
 
@@ -221,7 +227,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       {/* Top gradient for nav readability */}
       <div
         className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-[1]"
-        style={{ background: "linear-gradient(to bottom, rgba(7,14,26,0.5), transparent)" }}
+        style={{ background: "linear-gradient(to bottom, rgba(15,27,46,0.6), transparent)" }}
       />
 
       {/* Filters */}
