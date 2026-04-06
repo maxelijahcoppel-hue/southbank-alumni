@@ -77,8 +77,8 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       globe = new Globe(globeRef.current)
         .globeImageUrl("//unpkg.com/three-globe/example/img/earth-blue-marble.jpg")
         .bumpImageUrl("//unpkg.com/three-globe/example/img/earth-topology.png")
-        .atmosphereColor("rgba(100, 160, 255, 0.15)")
-        .atmosphereAltitude(0.18)
+        .atmosphereColor("rgba(80, 200, 120, 0.12)")
+        .atmosphereAltitude(0.2)
         .pointOfView({ lat: LONDON.lat, lng: LONDON.lng, altitude: 2.5 }, 0)
         .width(globeRef.current.clientWidth)
         .height(globeRef.current.clientHeight)
@@ -134,9 +134,9 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .arcDashAnimateTime(2500)
         .arcStroke(0.3);
 
-      // Set the WebGL background to a warm deep blue that blends with the gradient overlay
+      // Deep forest-dark background
       const renderer = globe.renderer();
-      renderer.setClearColor(0x0f1e33, 1);
+      renderer.setClearColor(0x071a12, 1);
 
       // Controls
       const controls = globe.controls();
@@ -176,19 +176,19 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
   }, [filteredAlumni, globeReady]);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[#0f1e33]">
+    <div className="relative w-full h-screen overflow-hidden bg-[#071a12]">
       {/* Globe */}
       <div ref={globeRef} className="absolute inset-0" />
 
-      {/* Sunset gradient overlays around edges */}
+      {/* Nature gradient overlays — forest greens around edges */}
       <div
         className="absolute inset-0 pointer-events-none z-[1]"
         style={{
           background: `
-            radial-gradient(ellipse 120% 80% at 50% 50%, transparent 30%, rgba(15,30,51,0.4) 60%, rgba(15,30,51,0.9) 100%),
-            linear-gradient(to bottom, transparent 40%, rgba(139,69,19,0.08) 70%, rgba(210,130,50,0.12) 85%, rgba(210,140,60,0.18) 100%),
-            linear-gradient(to right, rgba(80,40,80,0.06) 0%, transparent 30%, transparent 70%, rgba(180,100,40,0.08) 100%),
-            linear-gradient(to top, rgba(200,120,50,0.1) 0%, transparent 25%)
+            radial-gradient(ellipse 110% 80% at 50% 50%, transparent 25%, rgba(7,26,18,0.5) 55%, rgba(7,26,18,0.95) 100%),
+            linear-gradient(to bottom, transparent 50%, rgba(15,60,35,0.15) 75%, rgba(20,80,40,0.2) 90%, rgba(15,55,30,0.25) 100%),
+            linear-gradient(to top, rgba(10,45,25,0.15) 0%, transparent 20%),
+            linear-gradient(135deg, rgba(10,50,30,0.08) 0%, transparent 40%, transparent 60%, rgba(15,60,35,0.1) 100%)
           `,
         }}
       />
@@ -222,7 +222,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       {/* Top gradient for nav readability */}
       <div
         className="absolute top-0 left-0 right-0 h-24 pointer-events-none z-[1]"
-        style={{ background: "linear-gradient(to bottom, rgba(15,27,46,0.6), transparent)" }}
+        style={{ background: "linear-gradient(to bottom, rgba(7,26,18,0.6), transparent)" }}
       />
 
       {/* Filters */}
