@@ -201,15 +201,21 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         </div>
       )}
 
-      {/* Hero heading — top, minimal */}
+      {/* Hero heading + pin hint */}
       {globeReady && (
-        <div className="absolute top-24 left-0 right-0 z-20 pointer-events-none flex justify-center px-4">
+        <div className="absolute top-24 left-0 right-0 z-20 pointer-events-none flex flex-col items-center px-4">
           <h1
             className="text-white text-2xl md:text-4xl font-bold tracking-tight text-center drop-shadow-lg"
             style={{ animation: "fade-in 0.8s ease forwards" }}
           >
             Our alumni, around the world
           </h1>
+          <p
+            className="text-white/50 text-sm mt-2"
+            style={{ animation: "fade-in 1.4s ease forwards" }}
+          >
+            Click a pin to explore their story
+          </p>
         </div>
       )}
 
