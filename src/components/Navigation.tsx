@@ -39,7 +39,7 @@ export function Navigation() {
             alt="Southbank International School — Alumni Network"
             width={220}
             height={48}
-            className={`h-12 w-auto ${isMapPage ? "drop-shadow-[0_0_1px_white] [filter:brightness(0)_invert(1)_sepia(1)_saturate(3)_hue-rotate(175deg)_brightness(0.95)]" : ""}`}
+            className={`h-12 w-auto ${isMapPage ? "[filter:brightness(0)_invert(1)_sepia(1)_saturate(5)_hue-rotate(175deg)_brightness(1.1)]" : ""}`}
           />
         </Link>
 
