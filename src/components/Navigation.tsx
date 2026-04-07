@@ -33,19 +33,14 @@ export function Navigation() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-20">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link href="/">
           <Image
             src="/southbank-logo.png"
-            alt="Southbank International School"
-            width={32}
-            height={32}
-            className={isMapPage ? "brightness-0 invert" : ""}
+            alt="Southbank International School — Alumni Network"
+            width={180}
+            height={40}
+            className={`h-8 w-auto ${isMapPage ? "brightness-0 invert" : ""}`}
           />
-          <span className={`text-lg font-bold tracking-tight ${
-            isMapPage ? "text-white" : "text-gray-900"
-          }`}>
-            Southbank <span className="text-[#d4a843]">Alumni</span>
-          </span>
         </Link>
 
         {/* Desktop */}
