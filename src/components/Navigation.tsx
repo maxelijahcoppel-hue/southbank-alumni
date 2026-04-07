@@ -33,14 +33,27 @@ export function Navigation() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-20">
-        <Link href="/">
+        <Link href="/" className="flex items-center gap-2.5">
           <Image
             src="/southbank-logo.png"
-            alt="Southbank International School — Alumni Network"
+            alt="Southbank International School"
             width={220}
             height={48}
-            className={`h-12 w-auto ${isMapPage ? "brightness-0 invert" : ""}`}
+            className={`h-12 w-auto ${isMapPage ? "hidden" : ""}`}
           />
+          {isMapPage && (
+            <>
+              <svg width="40" height="40" viewBox="0 0 100 100" className="shrink-0">
+                <circle cx="50" cy="50" r="45" fill="#7BAFD4" opacity="0.3" />
+                <circle cx="50" cy="50" r="35" fill="none" stroke="white" strokeWidth="4" />
+                <circle cx="50" cy="50" r="22" fill="#7BAFD4" opacity="0.5" />
+              </svg>
+              <div className="flex flex-col leading-tight">
+                <span className="text-white font-bold text-[15px] tracking-tight">Southbank</span>
+                <span className="text-white/80 text-[11px]">International School</span>
+              </div>
+            </>
+          )}
         </Link>
 
         {/* Desktop */}
