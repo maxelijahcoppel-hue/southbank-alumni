@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   MapPin,
   Users,
@@ -50,6 +51,13 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="pt-32 pb-16 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto text-center">
+          <Image
+            src="/southbank-logo.png"
+            alt="Southbank International School"
+            width={64}
+            height={64}
+            className="mx-auto mb-6"
+          />
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">
             About the Southbank
             <br />
@@ -168,6 +176,60 @@ export default function AboutPage() {
               If you have ideas, feedback, or just want to say hi, I&apos;d love
               to hear from you. This project is as much yours as it is mine.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* School Contacts */}
+      <section className="py-16 px-5 sm:px-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="rounded-xl bg-white border border-gray-100 shadow-sm p-8 sm:p-10">
+            <h3 className="text-base font-semibold text-gray-900 mb-1">
+              School Contacts
+            </h3>
+            <p className="text-sm text-gray-400 mb-6">
+              Get in touch with our futures guidance team and leadership.
+            </p>
+
+            <div className="space-y-4">
+              <div>
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+                  Principal
+                </p>
+                <a
+                  href="mailto:angela.liu@southbank.org"
+                  className="text-sm text-gray-700 hover:text-[#d4a843] transition-colors"
+                >
+                  Angela Liu — angela.liu@southbank.org
+                </a>
+              </div>
+
+              <div className="border-t border-gray-100 pt-4">
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">
+                  Futures Guidance Counsellors
+                </p>
+                <div className="space-y-2">
+                  <a
+                    href="mailto:melanie.moorhouse@southbank.org"
+                    className="block text-sm text-gray-700 hover:text-[#d4a843] transition-colors"
+                  >
+                    Melanie Moorhouse — melanie.moorhouse@southbank.org
+                  </a>
+                  <a
+                    href="mailto:ana.decastro@southbank.org"
+                    className="block text-sm text-gray-700 hover:text-[#d4a843] transition-colors"
+                  >
+                    Ana De Castro — ana.decastro@southbank.org
+                  </a>
+                  <a
+                    href="mailto:emma.hajjaj@southbank.org"
+                    className="block text-sm text-gray-700 hover:text-[#d4a843] transition-colors"
+                  >
+                    Emma Hajjaj — emma.hajjaj@southbank.org
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

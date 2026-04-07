@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -32,13 +33,19 @@ export function Navigation() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-20">
-        <Link
-          href="/"
-          className={`text-lg font-bold tracking-tight ${
+        <Link href="/" className="flex items-center gap-2.5">
+          <Image
+            src="/southbank-logo.png"
+            alt="Southbank International School"
+            width={32}
+            height={32}
+            className={isMapPage ? "brightness-0 invert" : ""}
+          />
+          <span className={`text-lg font-bold tracking-tight ${
             isMapPage ? "text-white" : "text-gray-900"
-          }`}
-        >
-          Southbank <span className="text-[#d4a843]">Alumni</span>
+          }`}>
+            Southbank <span className="text-[#d4a843]">Alumni</span>
+          </span>
         </Link>
 
         {/* Desktop */}

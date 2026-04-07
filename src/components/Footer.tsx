@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const links = [
   { href: "/", label: "Map" },
@@ -14,8 +15,17 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8 py-12">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
           <div>
-            <div className="text-[15px] font-semibold text-white/90 tracking-tight">
-              Southbank <span className="text-[#d4a843]">Alumni</span>
+            <div className="flex items-center gap-2.5">
+              <Image
+                src="/southbank-logo.png"
+                alt="Southbank International School"
+                width={28}
+                height={28}
+                className="brightness-0 invert"
+              />
+              <span className="text-[15px] font-semibold text-white/90 tracking-tight">
+                Southbank <span className="text-[#d4a843]">Alumni</span>
+              </span>
             </div>
             <p className="mt-2 text-sm text-white/30 max-w-xs">
               Connecting Southbank International School students and alumni
