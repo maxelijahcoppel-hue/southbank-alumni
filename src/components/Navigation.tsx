@@ -37,9 +37,9 @@ export function Navigation() {
           <Image
             src="/southbank-logo.png"
             alt="Southbank International School — Alumni Network"
-            width={180}
-            height={40}
-            className={`h-8 w-auto ${isMapPage ? "brightness-0 invert" : ""}`}
+            width={220}
+            height={48}
+            className="h-12 w-auto"
           />
         </Link>
 

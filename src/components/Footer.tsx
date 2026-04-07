@@ -18,9 +18,9 @@ export function Footer() {
             <Image
               src="/southbank-logo.png"
               alt="Southbank International School — Alumni Network"
-              width={160}
-              height={36}
-              className="h-7 w-auto brightness-0 invert"
+              width={180}
+              height={40}
+              className="h-10 w-auto brightness-0 invert"
             />
             <p className="mt-2 text-sm text-white/30 max-w-xs">
               Connecting Southbank International School students and alumni
