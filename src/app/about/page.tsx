@@ -6,7 +6,6 @@ import {
   Link2,
   ArrowRight,
   Heart,
-  Quote,
 } from "lucide-react";
 import LiveStats from "./LiveStats";
 
@@ -144,42 +143,6 @@ export default function AboutPage() {
             <p className="mt-4 text-base text-gray-600 leading-relaxed">
               If you have ideas, feedback, or just want to say hi, I&apos;d love
               to hear from you. This project is as much yours as it is mine.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Principal Endorsement */}
-      <section className="py-16 px-5 sm:px-8">
-        <div className="max-w-2xl mx-auto">
-          <div className="rounded-xl bg-white border border-[#7BAFD4]/20 shadow-sm p-8 sm:p-10">
-            <div className="flex items-center gap-2 mb-4">
-              <Quote
-                className="text-[#7BAFD4]"
-                size={16}
-                strokeWidth={1.5}
-              />
-              <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
-                From our Principal
-              </span>
-            </div>
-            <blockquote className="text-base text-gray-600 leading-relaxed">
-              &ldquo;The Southbank Alumni Network is a wonderful initiative that
-              strengthens the bonds between our past and present students.
-              I&apos;m proud that one of our own students built this platform to
-              connect our global community.&rdquo;
-            </blockquote>
-            <p className="mt-4 text-sm font-medium text-gray-900">
-              &mdash; Angela Liu, Principal, Southbank International School
-            </p>
-            <p className="mt-3 text-xs text-gray-400 italic">
-              If you&apos;d like to discuss this project, please contact{" "}
-              <a
-                href="mailto:angela.liu@southbank.org"
-                className="text-[#7BAFD4] hover:underline"
-              >
-                angela.liu@southbank.org
-              </a>
             </p>
           </div>
         </div>
