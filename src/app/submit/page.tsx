@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Send,
@@ -11,6 +11,10 @@ import {
   ChevronDown,
   Search,
 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+
+const ADVICE_MAX_LENGTH = 500;
+const MEMORY_MAX_LENGTH = 500;
 
 const HL_SUBJECTS = [
   "Biology",
@@ -163,10 +167,12 @@ interface FormErrors {
 
 export default function SubmitPage() {
   const [fullName, setFullName] = useState("");
+  const [graduationYear, setGraduationYear] = useState("");
   const [undergraduateDegree, setUndergraduateDegree] = useState("");
   const [university, setUniversity] = useState("");
   const [universitySearch, setUniversitySearch] = useState("");
   const [universityOpen, setUniversityOpen] = useState(false);
+  const [alumniUniversities, setAlumniUniversities] = useState<string[]>([]);
   const [city, setCity] = useState("");
   const [citySearch, setCitySearch] = useState("");
   const [cityOpen, setCityOpen] = useState(false);
@@ -190,7 +196,24 @@ export default function SubmitPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const filteredUniversities = UNIVERSITIES.filter((u) =>
+  useEffect(() => {
+    async function fetchAlumniUniversities() {
+      const { data } = await supabase
+        .from("alumni_profiles")
+        .select("university")
+        .eq("status", "approved");
+      if (data) {
+        const unique = [...new Set(data.map((d: { university: string }) => d.university))].filter(Boolean);
+        setAlumniUniversities(unique as string[]);
+      }
+    }
+    fetchAlumniUniversities();
+  }, []);
+
+  // Merge static list with alumni universities (alumni ones shown first as suggestions)
+  const allUniversities = [...new Set([...alumniUniversities, ...UNIVERSITIES])];
+
+  const filteredUniversities = allUniversities.filter((u) =>
     u.toLowerCase().includes(universitySearch.toLowerCase())
   );
 
@@ -201,6 +224,14 @@ export default function SubmitPage() {
   function validate(): FormErrors {
     const errs: FormErrors = {};
     if (!fullName.trim()) errs.fullName = "Full name is required.";
+    if (!graduationYear) {
+      errs.graduationYear = "Graduation year is required.";
+    } else {
+      const year = parseInt(graduationYear, 10);
+      if (isNaN(year) || year < 2000 || year > 2026) {
+        errs.graduationYear = "Graduation year must be between 2000 and 2026.";
+      }
+    }
     if (!undergraduateDegree.trim())
       errs.undergraduateDegree = "Undergraduate degree is required.";
     if (!university) errs.university = "University is required.";
@@ -242,6 +273,7 @@ export default function SubmitPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           full_name: fullName.trim(),
+          graduation_year: parseInt(graduationYear, 10),
           undergraduate_degree: undergraduateDegree.trim(),
           university,
           location_city: city,
@@ -358,6 +390,19 @@ export default function SubmitPage() {
             />
           </Field>
 
+          {/* Graduation Year */}
+          <Field label="Graduation Year" required error={errors.graduationYear}>
+            <input
+              type="number"
+              value={graduationYear}
+              onChange={(e) => setGraduationYear(e.target.value)}
+              placeholder="e.g. 2024"
+              min={2000}
+              max={2026}
+              className={inputClass(errors.graduationYear)}
+            />
+          </Field>
+
           {/* Undergraduate Degree */}
           <Field
             label="Undergraduate Degree"
@@ -407,24 +452,32 @@ export default function SubmitPage() {
                     </div>
                   </div>
                   <div className="overflow-y-auto max-h-48">
-                    {filteredUniversities.map((u) => (
-                      <button
-                        key={u}
-                        type="button"
-                        onClick={() => {
-                          setUniversity(u);
-                          setUniversityOpen(false);
-                          setUniversitySearch("");
-                        }}
-                        className={`w-full text-left px-3 py-2 text-sm hover:bg-accent-gold/8 transition-colors ${
-                          university === u
-                            ? "bg-accent-gold/12 text-accent-gold font-medium"
-                            : "text-text-primary"
-                        }`}
-                      >
-                        {u}
-                      </button>
-                    ))}
+                    {filteredUniversities.map((u) => {
+                      const isAlumniUni = alumniUniversities.includes(u);
+                      return (
+                        <button
+                          key={u}
+                          type="button"
+                          onClick={() => {
+                            setUniversity(u);
+                            setUniversityOpen(false);
+                            setUniversitySearch("");
+                          }}
+                          className={`w-full text-left px-3 py-2 text-sm hover:bg-accent-gold/8 transition-colors ${
+                            university === u
+                              ? "bg-accent-gold/12 text-accent-gold font-medium"
+                              : "text-text-primary"
+                          }`}
+                        >
+                          {u}
+                          {isAlumniUni && (
+                            <span className="ml-2 text-xs text-[#7BAFD4]">
+                              Alumni
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
                     {filteredUniversities.length === 0 && (
                       <p className="px-3 py-4 text-sm text-text-muted text-center">
                         No results found.
@@ -604,11 +657,18 @@ export default function SubmitPage() {
           >
             <textarea
               value={adviceToStudents}
-              onChange={(e) => setAdviceToStudents(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value.length <= ADVICE_MAX_LENGTH)
+                  setAdviceToStudents(e.target.value);
+              }}
               placeholder="What would you tell current IB students?"
               rows={4}
+              maxLength={ADVICE_MAX_LENGTH}
               className={inputClass(errors.adviceToStudents)}
             />
+            <p className="mt-1 text-xs text-text-muted text-right">
+              {adviceToStudents.length}/{ADVICE_MAX_LENGTH} characters
+            </p>
           </Field>
 
           {/* Favourite Southbank Memory */}
@@ -619,11 +679,18 @@ export default function SubmitPage() {
           >
             <textarea
               value={favouriteMemory}
-              onChange={(e) => setFavouriteMemory(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value.length <= MEMORY_MAX_LENGTH)
+                  setFavouriteMemory(e.target.value);
+              }}
               placeholder="What is your favourite memory from Southbank?"
               rows={4}
+              maxLength={MEMORY_MAX_LENGTH}
               className={inputClass(errors.favouriteMemory)}
             />
+            <p className="mt-1 text-xs text-text-muted text-right">
+              {favouriteMemory.length}/{MEMORY_MAX_LENGTH} characters
+            </p>
           </Field>
 
           {/* Gap Year Toggle */}

@@ -8,6 +8,7 @@ export async function POST(request: Request) {
 
     const {
       full_name,
+      graduation_year,
       undergraduate_degree,
       university,
       location_city,
@@ -28,6 +29,12 @@ export async function POST(request: Request) {
     // Server-side validation
     const errors: string[] = [];
     if (!full_name?.trim()) errors.push("Full name is required.");
+    if (
+      graduation_year != null &&
+      (typeof graduation_year !== "number" || graduation_year < 2000 || graduation_year > 2026)
+    ) {
+      errors.push("Graduation year must be between 2000 and 2026.");
+    }
     if (!undergraduate_degree?.trim())
       errors.push("Undergraduate degree is required.");
     if (!university?.trim()) errors.push("University is required.");
@@ -53,6 +60,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase.from("alumni_profiles").insert({
       full_name: full_name.trim(),
+      graduation_year: graduation_year ?? null,
       undergraduate_degree: undergraduate_degree.trim(),
       university: university.trim(),
       location_city: location_city.trim(),

@@ -2,27 +2,19 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   MapPin,
-  Users,
-  GraduationCap,
-  Globe,
   Search,
-  ExternalLink,
   Link2,
   ArrowRight,
   Heart,
+  Quote,
 } from "lucide-react";
+import LiveStats from "./LiveStats";
 
 export const metadata = {
   title: "About — Southbank Alumni Network",
   description:
     "The story behind the Southbank Alumni Network: connecting current students with alumni worldwide.",
 };
-
-const stats = [
-  { label: "Alumni", value: "15", icon: Users },
-  { label: "Countries", value: "14", icon: Globe },
-  { label: "Universities", value: "15", icon: GraduationCap },
-];
 
 const steps = [
   {
@@ -82,7 +74,7 @@ export default function AboutPage() {
           <p className="mt-5 text-base text-gray-600 leading-relaxed">
             The Southbank Alumni Network changes that. It&apos;s a living map of
             where our alumni are — what they studied, where they went, what
-            they&apos;re doing now. If you&apos;re a Year 12 student wondering
+            they&apos;re doing now. If you&apos;re a Grade 11 student wondering
             what studying Economics at UCL is actually like, you can find someone
             who&apos;s done it. If you&apos;re deciding between universities in
             the US and the UK, you can talk to people who made that same choice.
@@ -96,30 +88,7 @@ export default function AboutPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-12 px-5 sm:px-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="grid grid-cols-3 gap-4">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="text-center py-8 px-4 rounded-xl bg-white border border-gray-100 shadow-sm"
-              >
-                <stat.icon
-                  className="mx-auto text-[#7BAFD4] mb-3"
-                  size={22}
-                  strokeWidth={1.5}
-                />
-                <div className="text-3xl sm:text-4xl font-bold text-gray-900 font-[family-name:var(--font-geist-mono)] leading-none">
-                  {stat.value}
-                </div>
-                <div className="mt-2 text-sm text-gray-400 font-medium">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <LiveStats />
 
       {/* How it works */}
       <section className="py-16 px-5 sm:px-8">
@@ -167,7 +136,7 @@ export default function AboutPage() {
               </span>
             </div>
             <p className="text-base text-gray-600 leading-relaxed">
-              I&apos;m Max Coppel, Year 13 at Southbank International School,
+              I&apos;m Max Coppel, Grade 11 at Southbank International School,
               Westminster. I built this because I think the connections between
               Southbank students are one of the most valuable things about this
               school — and they shouldn&apos;t disappear after graduation.
@@ -175,6 +144,42 @@ export default function AboutPage() {
             <p className="mt-4 text-base text-gray-600 leading-relaxed">
               If you have ideas, feedback, or just want to say hi, I&apos;d love
               to hear from you. This project is as much yours as it is mine.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Principal Endorsement */}
+      <section className="py-16 px-5 sm:px-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="rounded-xl bg-white border border-[#7BAFD4]/20 shadow-sm p-8 sm:p-10">
+            <div className="flex items-center gap-2 mb-4">
+              <Quote
+                className="text-[#7BAFD4]"
+                size={16}
+                strokeWidth={1.5}
+              />
+              <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+                From our Principal
+              </span>
+            </div>
+            <blockquote className="text-base text-gray-600 leading-relaxed">
+              &ldquo;The Southbank Alumni Network is a wonderful initiative that
+              strengthens the bonds between our past and present students.
+              I&apos;m proud that one of our own students built this platform to
+              connect our global community.&rdquo;
+            </blockquote>
+            <p className="mt-4 text-sm font-medium text-gray-900">
+              &mdash; Angela Liu, Principal, Southbank International School
+            </p>
+            <p className="mt-3 text-xs text-gray-400 italic">
+              If you&apos;d like to discuss this project, please contact{" "}
+              <a
+                href="mailto:angela.liu@southbank.org"
+                className="text-[#7BAFD4] hover:underline"
+              >
+                angela.liu@southbank.org
+              </a>
             </p>
           </div>
         </div>
