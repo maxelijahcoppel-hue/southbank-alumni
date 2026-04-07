@@ -35,11 +35,11 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-20">
         <Link href="/">
           <Image
-            src="/southbank-logo.png"
+            src={isMapPage ? "/southbank-logo-white.png" : "/southbank-logo.png"}
             alt="Southbank International School — Alumni Network"
             width={220}
             height={48}
-            className={`h-12 w-auto ${isMapPage ? "[filter:brightness(0)_invert(1)_sepia(1)_saturate(5)_hue-rotate(175deg)_brightness(1.1)]" : ""}`}
+            className="h-12 w-auto"
           />
         </Link>
 

@@ -13,6 +13,7 @@
     "@supabase/supabase-js": "^2.101.1",
     "@types/mapbox-gl": "^3.5.0",
     "@types/react-simple-maps": "^3.0.6",
+    "canvas": "^3.2.3",
     "globe.gl": "^2.45.2",
     "lucide-react": "^1.7.0",
     "mapbox-gl": "^3.21.0",
@@ -39,6 +40,7 @@
     "unrs-resolver"
   ],
   "trustedDependencies": [
+    "canvas",
     "sharp",
     "unrs-resolver"
   ]
