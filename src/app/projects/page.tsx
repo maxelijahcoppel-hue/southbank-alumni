@@ -48,7 +48,7 @@ export default async function ProjectsPage() {
             </p>
           </div>
           <Link
-            href="/submit"
+            href="/projects/submit"
             className="shrink-0 mt-6 inline-flex items-center gap-2 rounded-lg bg-accent-gold text-bg-dark px-5 py-2.5 font-medium hover:bg-accent-gold/90 transition-colors"
           >
             <Plus className="w-4 h-4" />
@@ -64,7 +64,7 @@ export default async function ProjectsPage() {
               Be the first to share your project with the community.
             </p>
             <Link
-              href="/submit"
+              href="/projects/submit"
               className="inline-flex items-center gap-2 rounded-lg bg-accent-gold text-bg-dark px-5 py-2.5 font-medium hover:bg-accent-gold/90 transition-colors"
             >
               <Plus className="w-4 h-4" />

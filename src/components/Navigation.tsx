@@ -39,7 +39,7 @@ export function Navigation() {
             alt="Southbank International School — Alumni Network"
             width={220}
             height={48}
-            className="h-12 w-auto"
+            className={`h-12 w-auto ${isMapPage ? "brightness-0 invert" : ""}`}
           />
         </Link>
 
