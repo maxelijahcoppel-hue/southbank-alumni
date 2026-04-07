@@ -237,7 +237,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
               <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">${p.full_name}</div>
               <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 2px;">${p.university}</div>
               <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 6px;">${p.current_profession}</div>
-              <div style="font-size: 11px; color: #d4a843;">Click to view profile</div>
+              <div style="font-size: 11px; color: #7BAFD4;">Click to view profile</div>
             </div>
           `;
         })
@@ -247,7 +247,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
         .arcStartLng(() => LONDON.lng)
         .arcEndLat((d: unknown) => (d as AlumniProfile).latitude ?? 0)
         .arcEndLng((d: unknown) => (d as AlumniProfile).longitude ?? 0)
-        .arcColor(() => ["rgba(212, 168, 67, 0.25)", "rgba(212, 168, 67, 0.02)"])
+        .arcColor(() => ["rgba(123, 175, 212, 0.25)", "rgba(123, 175, 212, 0.02)"])
         .arcDashLength(0.4)
         .arcDashGap(0.2)
         .arcDashAnimateTime(2500)
@@ -331,7 +331,7 @@ export function AlumniMap({ alumni }: AlumniMapProps) {
       {/* Loading state before globe is ready */}
       {!globeReady && (
         <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
-          <div className="w-16 h-16 rounded-full border-2 border-[#d4a843]/20 border-t-[#d4a843] animate-spin mb-6" />
+          <div className="w-16 h-16 rounded-full border-2 border-[#7BAFD4]/20 border-t-[#7BAFD4] animate-spin mb-6" />
           <p className="text-white/30 text-sm">Loading globe...</p>
         </div>
       )}

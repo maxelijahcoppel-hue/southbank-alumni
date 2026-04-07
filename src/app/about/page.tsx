@@ -105,7 +105,7 @@ export default function AboutPage() {
                 className="text-center py-8 px-4 rounded-xl bg-white border border-gray-100 shadow-sm"
               >
                 <stat.icon
-                  className="mx-auto text-[#d4a843] mb-3"
+                  className="mx-auto text-[#7BAFD4] mb-3"
                   size={22}
                   strokeWidth={1.5}
                 />
@@ -130,9 +130,9 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-3 gap-8">
             {steps.map((step, i) => (
               <div key={step.title} className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#d4a843]/10 mb-4">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#7BAFD4]/10 mb-4">
                   <step.icon
-                    className="text-[#d4a843]"
+                    className="text-[#7BAFD4]"
                     size={20}
                     strokeWidth={1.5}
                   />
@@ -158,7 +158,7 @@ export default function AboutPage() {
           <div className="rounded-xl bg-white border border-gray-100 shadow-sm p-8 sm:p-10">
             <div className="flex items-center gap-2 mb-4">
               <Heart
-                className="text-[#d4a843]"
+                className="text-[#7BAFD4]"
                 size={16}
                 strokeWidth={1.5}
               />
@@ -198,7 +198,7 @@ export default function AboutPage() {
                 </p>
                 <a
                   href="mailto:angela.liu@southbank.org"
-                  className="text-sm text-gray-700 hover:text-[#d4a843] transition-colors"
+                  className="text-sm text-gray-700 hover:text-[#7BAFD4] transition-colors"
                 >
                   Angela Liu — angela.liu@southbank.org
                 </a>
@@ -211,19 +211,19 @@ export default function AboutPage() {
                 <div className="space-y-2">
                   <a
                     href="mailto:melanie.moorhouse@southbank.org"
-                    className="block text-sm text-gray-700 hover:text-[#d4a843] transition-colors"
+                    className="block text-sm text-gray-700 hover:text-[#7BAFD4] transition-colors"
                   >
                     Melanie Moorhouse — melanie.moorhouse@southbank.org
                   </a>
                   <a
                     href="mailto:ana.decastro@southbank.org"
-                    className="block text-sm text-gray-700 hover:text-[#d4a843] transition-colors"
+                    className="block text-sm text-gray-700 hover:text-[#7BAFD4] transition-colors"
                   >
                     Ana De Castro — ana.decastro@southbank.org
                   </a>
                   <a
                     href="mailto:emma.hajjaj@southbank.org"
-                    className="block text-sm text-gray-700 hover:text-[#d4a843] transition-colors"
+                    className="block text-sm text-gray-700 hover:text-[#7BAFD4] transition-colors"
                   >
                     Emma Hajjaj — emma.hajjaj@southbank.org
                   </a>
@@ -246,7 +246,7 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/submit"
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#d4a843] text-[#0a1628] text-sm font-medium hover:bg-[#d4a843]/90 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#7BAFD4] text-[#0a1628] text-sm font-medium hover:bg-[#7BAFD4]/90 transition-colors"
             >
               Submit your profile
               <ArrowRight size={15} />

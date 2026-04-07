@@ -43,15 +43,15 @@ export default function NotFound() {
               href={item.href}
               className="flex items-center gap-4 p-4 rounded-xl bg-white border border-gray-100 shadow-sm hover:border-gray-200 hover:shadow transition-all group"
             >
-              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#d4a843]/10 flex items-center justify-center">
+              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#7BAFD4]/10 flex items-center justify-center">
                 <item.icon
-                  className="text-[#d4a843]"
+                  className="text-[#7BAFD4]"
                   size={18}
                   strokeWidth={1.5}
                 />
               </div>
               <div>
-                <div className="text-sm font-medium text-gray-900 group-hover:text-[#d4a843] transition-colors">
+                <div className="text-sm font-medium text-gray-900 group-hover:text-[#7BAFD4] transition-colors">
                   {item.label}
                 </div>
                 <div className="text-xs text-gray-400">{item.description}</div>

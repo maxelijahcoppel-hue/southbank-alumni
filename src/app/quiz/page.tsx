@@ -182,7 +182,7 @@ export default function QuizPage() {
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4a843]/10 text-[#d4a843] text-xs font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7BAFD4]/10 text-[#7BAFD4] text-xs font-medium mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             Subject Quiz
           </div>
@@ -207,7 +207,7 @@ export default function QuizPage() {
                     key={i}
                     className={`w-3 h-3 rounded-full transition-all duration-300 ${
                       i < selectedSubjects.length
-                        ? "bg-[#d4a843] scale-110"
+                        ? "bg-[#7BAFD4] scale-110"
                         : "bg-gray-200"
                     }`}
                   />
@@ -248,10 +248,10 @@ export default function QuizPage() {
                         disabled={disabled}
                         className={`text-sm px-3.5 py-2 rounded-full border transition-all ${
                           selected
-                            ? "bg-[#d4a843]/10 border-[#d4a843]/30 text-[#b8922e] font-medium shadow-sm"
+                            ? "bg-[#7BAFD4]/10 border-[#7BAFD4]/30 text-[#5B9BC9] font-medium shadow-sm"
                             : disabled
                               ? "bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed"
-                              : "bg-white border-gray-200 text-gray-500 hover:border-[#d4a843]/30 hover:text-gray-700"
+                              : "bg-white border-gray-200 text-gray-500 hover:border-[#7BAFD4]/30 hover:text-gray-700"
                         }`}
                       >
                         {selected && (
@@ -272,7 +272,7 @@ export default function QuizPage() {
                 disabled={selectedSubjects.length !== 3}
                 className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-base font-semibold transition-all ${
                   selectedSubjects.length === 3
-                    ? "bg-[#d4a843] text-[#0a1628] hover:bg-[#c49a3a] shadow-lg shadow-[#d4a843]/20"
+                    ? "bg-[#7BAFD4] text-[#0a1628] hover:bg-[#c49a3a] shadow-lg shadow-[#7BAFD4]/20"
                     : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
@@ -295,7 +295,7 @@ export default function QuizPage() {
               {selectedSubjects.map((s) => (
                 <span
                   key={s}
-                  className="text-sm px-3 py-1.5 rounded-full bg-[#d4a843]/10 border border-[#d4a843]/25 text-[#b8922e] font-medium"
+                  className="text-sm px-3 py-1.5 rounded-full bg-[#7BAFD4]/10 border border-[#7BAFD4]/25 text-[#5B9BC9] font-medium"
                 >
                   {s}
                 </span>
@@ -305,7 +305,7 @@ export default function QuizPage() {
             {/* Match stat */}
             {results && (
               <div className="text-center mb-8">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#d4a843]/8 text-[#b8922e]">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#7BAFD4]/8 text-[#5B9BC9]">
                   <Sparkles className="w-4 h-4" />
                   <span className="text-sm font-medium">
                     {results.exactMatches > 0
@@ -323,7 +323,7 @@ export default function QuizPage() {
                 </p>
                 <button
                   onClick={handleReset}
-                  className="inline-flex items-center gap-2 text-sm text-[#d4a843] hover:text-[#b8922e] transition-colors"
+                  className="inline-flex items-center gap-2 text-sm text-[#7BAFD4] hover:text-[#5B9BC9] transition-colors"
                 >
                   <RotateCcw className="w-4 h-4" />
                   Try different subjects
@@ -350,7 +350,7 @@ export default function QuizPage() {
                           <div className="flex items-center gap-2">
                             <div className="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-[#d4a843] rounded-full"
+                                className="h-full bg-[#7BAFD4] rounded-full"
                                 style={{
                                   width: `${Math.max(
                                     12,
@@ -381,7 +381,7 @@ export default function QuizPage() {
                           className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full bg-gray-50 text-gray-600"
                         >
                           {c.name}
-                          <span className="text-xs font-semibold text-[#d4a843]">
+                          <span className="text-xs font-semibold text-[#7BAFD4]">
                             {c.count}
                           </span>
                         </span>
@@ -404,7 +404,7 @@ export default function QuizPage() {
                           <span className="text-sm text-gray-700">
                             {u.name}
                           </span>
-                          <span className="text-xs font-semibold text-[#d4a843]">
+                          <span className="text-xs font-semibold text-[#7BAFD4]">
                             {u.count}
                           </span>
                         </div>
@@ -419,7 +419,7 @@ export default function QuizPage() {
                       title="Alumni Advice"
                       subtitle={`From ${results.featuredQuote.name}, ${results.featuredQuote.profession}`}
                     >
-                      <blockquote className="text-gray-600 italic border-l-2 border-[#d4a843]/30 pl-4 text-sm leading-relaxed">
+                      <blockquote className="text-gray-600 italic border-l-2 border-[#7BAFD4]/30 pl-4 text-sm leading-relaxed">
                         &ldquo;{results.featuredQuote.advice}&rdquo;
                       </blockquote>
                     </ResultCard>
@@ -428,7 +428,7 @@ export default function QuizPage() {
                   {/* Share section */}
                   <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                     <div className="flex items-center gap-2 mb-4">
-                      <div className="w-8 h-8 rounded-lg bg-[#d4a843]/10 flex items-center justify-center text-[#d4a843]">
+                      <div className="w-8 h-8 rounded-lg bg-[#7BAFD4]/10 flex items-center justify-center text-[#7BAFD4]">
                         <Share2 className="w-5 h-5" />
                       </div>
                       <h3 className="font-semibold text-gray-900">
@@ -445,7 +445,7 @@ export default function QuizPage() {
                       className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
                         copied
                           ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
-                          : "bg-[#d4a843] text-[#0a1628] hover:bg-[#c49a3a]"
+                          : "bg-[#7BAFD4] text-[#0a1628] hover:bg-[#c49a3a]"
                       }`}
                     >
                       {copied ? (
@@ -496,7 +496,7 @@ function ResultCard({
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
       <div className="flex items-center gap-2 mb-1">
-        <div className="w-8 h-8 rounded-lg bg-[#d4a843]/10 flex items-center justify-center text-[#d4a843]">
+        <div className="w-8 h-8 rounded-lg bg-[#7BAFD4]/10 flex items-center justify-center text-[#7BAFD4]">
           {icon}
         </div>
         <h3 className="font-semibold text-gray-900">{title}</h3>

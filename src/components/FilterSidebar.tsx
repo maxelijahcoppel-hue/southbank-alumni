@@ -82,7 +82,7 @@ export function FilterSidebar({
         <SlidersHorizontal className="w-4 h-4" />
         <span>Filters</span>
         {activeCount > 0 && (
-          <span className="ml-0.5 w-5 h-5 rounded-full bg-[#d4a843] text-[#0a1628] text-xs font-bold flex items-center justify-center">
+          <span className="ml-0.5 w-5 h-5 rounded-full bg-[#7BAFD4] text-[#0a1628] text-xs font-bold flex items-center justify-center">
             {activeCount}
           </span>
         )}
@@ -104,7 +104,7 @@ export function FilterSidebar({
           <h2 className="text-base font-semibold text-white">Filters</h2>
           <div className="flex items-center gap-3">
             {hasActiveFilters && (
-              <button onClick={onClear} className="text-xs text-[#d4a843] hover:text-[#d4a843]/80">
+              <button onClick={onClear} className="text-xs text-[#7BAFD4] hover:text-[#7BAFD4]/80">
                 Clear all
               </button>
             )}
@@ -132,7 +132,7 @@ export function FilterSidebar({
                     onClick={() => toggleSubject(subject)}
                     className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
                       active
-                        ? "bg-[#d4a843]/20 text-[#d4a843] border border-[#d4a843]/30"
+                        ? "bg-[#7BAFD4]/20 text-[#7BAFD4] border border-[#7BAFD4]/30"
                         : "bg-white/5 text-white/45 border border-white/[0.06] hover:text-white/70 hover:bg-white/8"
                     }`}
                   >
@@ -205,7 +205,7 @@ export function FilterSidebar({
                     yearRange: [parseInt(e.target.value) || 2010, filters.yearRange[1]],
                   })
                 }
-                className="w-20 bg-white/5 border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white text-center focus:outline-none focus:border-[#d4a843]/40"
+                className="w-20 bg-white/5 border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white text-center focus:outline-none focus:border-[#7BAFD4]/40"
                 min={2000}
                 max={2030}
               />
@@ -219,7 +219,7 @@ export function FilterSidebar({
                     yearRange: [filters.yearRange[0], parseInt(e.target.value) || 2026],
                   })
                 }
-                className="w-20 bg-white/5 border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white text-center focus:outline-none focus:border-[#d4a843]/40"
+                className="w-20 bg-white/5 border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white text-center focus:outline-none focus:border-[#7BAFD4]/40"
                 min={2000}
                 max={2030}
               />
@@ -295,7 +295,7 @@ function FilterSection({
             {title}
           </span>
           {count > 0 && (
-            <span className="w-4.5 h-4.5 rounded-full bg-[#d4a843]/20 text-[#d4a843] text-[10px] font-bold flex items-center justify-center px-1.5">
+            <span className="w-4.5 h-4.5 rounded-full bg-[#7BAFD4]/20 text-[#7BAFD4] text-[10px] font-bold flex items-center justify-center px-1.5">
               {count}
             </span>
           )}
@@ -340,7 +340,7 @@ function SearchableDropdown({
           onFocus={() => setShowDropdown(true)}
           onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
           placeholder={placeholder}
-          className="w-full bg-white/5 border border-white/[0.08] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#d4a843]/40 transition-colors"
+          className="w-full bg-white/5 border border-white/[0.08] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#7BAFD4]/40 transition-colors"
         />
         {value && (
           <button
@@ -392,7 +392,7 @@ function ToggleOption({
     >
       <div
         className={`w-9 h-5 rounded-full transition-colors flex items-center px-0.5 ${
-          checked ? "bg-[#d4a843]" : "bg-white/10"
+          checked ? "bg-[#7BAFD4]" : "bg-white/10"
         }`}
       >
         <div

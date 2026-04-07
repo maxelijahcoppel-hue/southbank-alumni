@@ -225,7 +225,7 @@ export default function MatchPage() {
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#d4a843]/10 text-[#d4a843] text-xs font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7BAFD4]/10 text-[#7BAFD4] text-xs font-medium mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             What can Southbank students become?
           </div>
@@ -272,7 +272,7 @@ export default function MatchPage() {
                       onClick={() => toggleSubject(subject)}
                       className={`text-xs px-2.5 py-1.5 rounded-full border transition-all ${
                         selected
-                          ? "bg-[#d4a843]/10 border-[#d4a843]/25 text-[#b8922e] font-medium"
+                          ? "bg-[#7BAFD4]/10 border-[#7BAFD4]/25 text-[#5B9BC9] font-medium"
                           : "bg-white border-gray-150 text-gray-400 hover:border-gray-300 hover:text-gray-600"
                       }`}
                     >
@@ -294,7 +294,7 @@ export default function MatchPage() {
                   value={filters.universityInterest}
                   onChange={(e) => setFilters((f) => ({ ...f, universityInterest: e.target.value }))}
                   placeholder="Type a university name..."
-                  className="w-full bg-gray-50 border border-gray-150 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#d4a843]/40 focus:bg-white transition-colors"
+                  className="w-full bg-gray-50 border border-gray-150 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#7BAFD4]/40 focus:bg-white transition-colors"
                   list="universities"
                 />
                 <datalist id="universities">
@@ -316,7 +316,7 @@ export default function MatchPage() {
                   value={filters.careerInterest}
                   onChange={(e) => setFilters((f) => ({ ...f, careerInterest: e.target.value }))}
                   placeholder="e.g. Engineer, Analyst, Designer..."
-                  className="w-full bg-gray-50 border border-gray-150 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#d4a843]/40 focus:bg-white transition-colors"
+                  className="w-full bg-gray-50 border border-gray-150 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#7BAFD4]/40 focus:bg-white transition-colors"
                   list="careers"
                 />
                 <datalist id="careers">
@@ -338,7 +338,7 @@ export default function MatchPage() {
                   value={filters.countryInterest}
                   onChange={(e) => setFilters((f) => ({ ...f, countryInterest: e.target.value }))}
                   placeholder="Type a country..."
-                  className="w-full bg-gray-50 border border-gray-150 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#d4a843]/40 focus:bg-white transition-colors"
+                  className="w-full bg-gray-50 border border-gray-150 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#7BAFD4]/40 focus:bg-white transition-colors"
                   list="countries"
                 />
                 <datalist id="countries">
@@ -379,7 +379,7 @@ export default function MatchPage() {
                       onClick={() => setFilters((f) => ({ ...f, tookGapYear: opt.value }))}
                       className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
                         filters.tookGapYear === opt.value
-                          ? "bg-[#d4a843]/10 border-[#d4a843]/25 text-[#b8922e] font-medium"
+                          ? "bg-[#7BAFD4]/10 border-[#7BAFD4]/25 text-[#5B9BC9] font-medium"
                           : "bg-white border-gray-150 text-gray-400 hover:border-gray-300"
                       }`}
                     >
@@ -447,8 +447,8 @@ export default function MatchPage() {
                           className="w-full text-left p-5 flex items-start gap-4"
                         >
                           {/* Match score circle */}
-                          <div className="shrink-0 w-12 h-12 rounded-full bg-[#d4a843]/10 flex items-center justify-center">
-                            <span className="text-sm font-bold text-[#b8922e]">{matchPercent}%</span>
+                          <div className="shrink-0 w-12 h-12 rounded-full bg-[#7BAFD4]/10 flex items-center justify-center">
+                            <span className="text-sm font-bold text-[#5B9BC9]">{matchPercent}%</span>
                           </div>
 
                           <div className="min-w-0 flex-1">
@@ -480,7 +480,7 @@ export default function MatchPage() {
                               {reasons.map((reason) => (
                                 <span
                                   key={reason}
-                                  className="text-[10px] px-2 py-0.5 rounded-full bg-[#d4a843]/8 text-[#b8922e]"
+                                  className="text-[10px] px-2 py-0.5 rounded-full bg-[#7BAFD4]/8 text-[#5B9BC9]"
                                 >
                                   {reason}
                                 </span>
@@ -510,7 +510,7 @@ export default function MatchPage() {
                                       key={s}
                                       className={`text-xs px-2 py-1 rounded-lg ${
                                         filters.hlSubjects.includes(s)
-                                          ? "bg-[#d4a843]/10 text-[#b8922e] font-medium"
+                                          ? "bg-[#7BAFD4]/10 text-[#5B9BC9] font-medium"
                                           : "bg-gray-50 text-gray-400"
                                       }`}
                                     >
@@ -544,7 +544,7 @@ export default function MatchPage() {
                                 <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
                                   Advice to Students
                                 </p>
-                                <blockquote className="text-sm text-gray-600 italic border-l-2 border-[#d4a843]/30 pl-3">
+                                <blockquote className="text-sm text-gray-600 italic border-l-2 border-[#7BAFD4]/30 pl-3">
                                   "{profile.advice_to_students}"
                                 </blockquote>
                               </div>
@@ -602,7 +602,7 @@ function ToggleRow({
   return (
     <button onClick={() => onChange(!checked)} className="flex items-center gap-3 w-full group">
       <div className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
-        checked ? "bg-[#d4a843]/10 text-[#d4a843]" : "bg-gray-50 text-gray-300"
+        checked ? "bg-[#7BAFD4]/10 text-[#7BAFD4]" : "bg-gray-50 text-gray-300"
       }`}>
         {icon}
       </div>
@@ -612,7 +612,7 @@ function ToggleRow({
       </div>
       <div
         className={`w-9 h-5 rounded-full transition-colors flex items-center px-0.5 ${
-          checked ? "bg-[#d4a843]" : "bg-gray-200"
+          checked ? "bg-[#7BAFD4]" : "bg-gray-200"
         }`}
       >
         <div

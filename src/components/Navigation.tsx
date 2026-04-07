@@ -69,8 +69,8 @@ export function Navigation() {
             href="/submit"
             className={`ml-4 px-5 py-2 rounded-lg text-sm font-semibold transition-all ${
               isMapPage
-                ? "bg-[#d4a843]/15 text-[#d4a843] border border-[#d4a843]/25 hover:bg-[#d4a843]/25"
-                : "bg-[#d4a843]/10 text-[#b8922e] border border-[#d4a843]/20 hover:bg-[#d4a843]/20"
+                ? "bg-[#7BAFD4]/15 text-[#7BAFD4] border border-[#7BAFD4]/25 hover:bg-[#7BAFD4]/25"
+                : "bg-[#7BAFD4]/10 text-[#5B9BC9] border border-[#7BAFD4]/20 hover:bg-[#7BAFD4]/20"
             }`}
           >
             Submit Profile
@@ -124,7 +124,7 @@ export function Navigation() {
             <Link
               href="/submit"
               onClick={() => setMobileOpen(false)}
-              className="block mt-2 px-4 py-3 rounded-lg text-[15px] font-semibold text-[#d4a843]"
+              className="block mt-2 px-4 py-3 rounded-lg text-[15px] font-semibold text-[#7BAFD4]"
             >
               Submit Profile
             </Link>
