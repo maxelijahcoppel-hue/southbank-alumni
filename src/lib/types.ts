@@ -19,6 +19,7 @@ export interface AlumniProfile {
   open_to_contact: boolean;
   open_to_mentoring: boolean;
   consent_given: boolean;
+  consent_given_at: string | null;
   status: "pending" | "approved" | "rejected";
   created_at: string;
 }

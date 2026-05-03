@@ -23,6 +23,7 @@ create table if not exists alumni_profiles (
   open_to_contact boolean not null default false,
   open_to_mentoring boolean not null default false,
   consent_given boolean not null default false,
+  consent_given_at timestamptz,
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
   created_at timestamptz not null default now()
 );

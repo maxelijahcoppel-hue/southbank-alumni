@@ -78,6 +78,7 @@ export async function POST(request: Request) {
       open_to_contact: !!open_to_contact,
       open_to_mentoring: !!open_to_mentoring,
       consent_given: true,
+      consent_given_at: new Date().toISOString(),
       status: "pending",
     });
 

@@ -739,53 +739,67 @@ export default function SubmitPage() {
             />
           </Field>
 
-          {/* Checkboxes */}
+          {/* Preferences */}
           <div className="space-y-3">
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
-                checked={openToContact}
-                onChange={(e) => {
-                  if (!e.target.checked && openToMentoring) return;
-                  setOpenToContact(e.target.checked);
-                }}
-                className="mt-0.5 h-4 w-4 rounded border-border text-accent-gold focus:ring-accent-gold"
-              />
-              <span className="text-sm text-text-primary">
-                I am open to being contacted by current students
-                {openToMentoring && <span className="text-xs text-text-muted ml-1">(required when mentoring)</span>}
-              </span>
-            </label>
-
-            <label className="flex items-start gap-3 cursor-pointer">
-              <input
-                type="checkbox"
                 checked={openToMentoring}
-                onChange={(e) => {
-                  setOpenToMentoring(e.target.checked);
-                  if (e.target.checked) setOpenToContact(true);
-                }}
+                onChange={(e) => setOpenToMentoring(e.target.checked)}
                 className="mt-0.5 h-4 w-4 rounded border-border text-accent-gold focus:ring-accent-gold"
               />
               <span className="text-sm text-text-primary">
                 I am open to mentoring students
               </span>
             </label>
+          </div>
+
+          {/* Consent */}
+          <div className="space-y-4 rounded-lg border border-border bg-white p-4">
+            <p className="text-xs font-medium text-text-muted uppercase tracking-wide">
+              Consent
+            </p>
 
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
                 checked={consentGiven}
                 onChange={(e) => setConsentGiven(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded border-border text-accent-gold focus:ring-accent-gold"
+                className="mt-0.5 h-4 w-4 shrink-0 rounded border-border text-accent-gold focus:ring-accent-gold"
               />
-              <span className="text-sm text-text-primary">
-                I consent to my profile being displayed *
+              <span className="text-sm text-text-primary leading-relaxed">
+                I consent to the Southbank Alumni Network collecting and
+                displaying the information I provide on this form on the
+                Southbank Alumni Network website (southbank-alumni.vercel.app).
+                I understand that my profile will be publicly visible and that I
+                can request its removal at any time by emailing{" "}
+                <a href="mailto:maxelijahcoppel@gmail.com" className="text-accent-gold hover:underline">maxelijahcoppel@gmail.com</a>.
+                I have read and agree to the{" "}
+                <Link href="/privacy" target="_blank" className="text-accent-gold hover:underline">Privacy Policy</Link>
+                {" "}and{" "}
+                <Link href="/terms" target="_blank" className="text-accent-gold hover:underline">Terms of Service</Link>.
+                {" "}<span className="text-error">*</span>
               </span>
             </label>
             {errors.consentGiven && (
-              <p className="text-sm text-error">{errors.consentGiven}</p>
+              <p className="text-sm text-error pl-7">{errors.consentGiven}</p>
             )}
+
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={openToContact}
+                onChange={(e) => setOpenToContact(e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 rounded border-border text-accent-gold focus:ring-accent-gold"
+              />
+              <span className="text-sm text-text-primary leading-relaxed">
+                I am happy to be contacted by current Southbank students via
+                LinkedIn. I understand that my LinkedIn profile URL will be
+                displayed on my alumni profile. Any messages I receive on
+                LinkedIn are governed by LinkedIn&apos;s own privacy policy and
+                terms of service.
+              </span>
+            </label>
           </div>
 
           {/* Submit Button */}

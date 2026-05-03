@@ -221,7 +221,7 @@ export function AlumniCard({ alumni, onClose }: AlumniCardProps) {
           </div>
 
           {/* LinkedIn Button with Message Template */}
-          {alumni.linkedin_url && (
+          {alumni.linkedin_url && alumni.open_to_contact && (
             <LinkedInMessageButton alumni={alumni} />
           )}
         </div>
