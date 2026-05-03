@@ -43,7 +43,11 @@ export function Footer() {
 
         <div className="mt-10 pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-white/25">
           <span>Built by Max Coppel &middot; Southbank International School</span>
-          <span>&copy; 2026</span>
+          <div className="flex items-center gap-3">
+            <Link href="/terms" className="hover:text-white/50 transition-colors">Terms</Link>
+            <Link href="/privacy" className="hover:text-white/50 transition-colors">Privacy</Link>
+            <span>&copy; 2026</span>
+          </div>
         </div>
       </div>
     </footer>
